@@ -1,6 +1,7 @@
 .main-container{
     grid-template-columns: repeat(2, 1fr);
     padding-left: 20px;
+    width: 73%;
 }
 
 .main-container .logo img{
