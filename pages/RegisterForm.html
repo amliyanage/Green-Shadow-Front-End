@@ -3,21 +3,27 @@
 <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Login-Page</title>
-      <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+      <title>Register</title>
+      <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
       <link rel="stylesheet" href="/css/style.css">
-      <link rel="stylesheet" href="css/custom/LoginForm.css">
+      <link rel="stylesheet" href="/css/custom/RegisterForm.css">
 </head>
 <body>
       <div class="main-container d-grid">
-            <div class="p-5">
+            <div class="w-100 h-100 d-flex align-items-end">
+                  <img class="w-auto" src="/assets/registerPageImg.png" alt="" srcset="">
+                  <div class="h-100 d-flex align-items-center justify-content-start ms-5">
+                    <canvas class="h-75"></canvas>
+                </div>
+            </div>
+            <div class="pt-5 pe-5">
                   <div class="logo d-flex gap-4 align-items-center mt-5">
-                        <img src="assets/logo.svg" alt="logo">
+                        <img src="/assets/logo.svg" alt="logo">
                         <h1 class="m-0">Green Shadow</h1>
                   </div>
                   <div class="form-container mt-5">
-                <h3>Sign in your account</h3>
-                <h4 class="mt-2">"Sign in to start managing your farm today!"</h4>
+                <h3>Create your account</h3>
+                <h4 class="mt-2">"Sign Up to start managing your farm today!"</h4>
 
                 <div class="mt-5">
 
@@ -26,10 +32,20 @@
                             <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
                             <label for="floatingInput">Email address</label>
                         </div>
-                        <div class="form-floating">
+                        <div class="form-floating mb-3">
                             <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
                             <label for="floatingPassword">Password</label>
                         </div>
+                        <div class="form-floating mb-3">
+                              <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                    <option selected>Choose an option</option>
+                                    <option value="1">Option 1</option>
+                                    <option value="2">Option 2</option>
+                                    <option value="3">Option 3</option>
+                              </select>
+                              <label for="floatingSelect">Select an option</label>
+                        </div>
+
                     </div>
 
                     <div class="d-flex mt-5" >
@@ -44,8 +60,9 @@
 
             </div>
             <div class="d-flex align-items-center justify-content-between mt-5">
+                <h5 class="switchForm">Already have an account ? <a href="/index.html">Login</a> Now. </h5>
                 <button class="cssbuttons-io-button">
-                    Sign In
+                    Sign Up
                     <div class="icon">
                         <svg
                                 height="24"
@@ -61,16 +78,7 @@
                         </svg>
                     </div>
                 </button>
-                <h5>Don’t have an account ? <a href="pages/RegisterForm.html">Register</a> Now. </h5>
             </div>
-            </div>
-            <div class="d-flex justify-content-center align-items-end">
-                <div class="h-100 d-flex align-items-center justify-content-start ms-5">
-                    <canvas class="h-75"></canvas>
-                </div>
-                <img class="w-100 h-100" src="assets/loginPageImg.png" alt="">
-            </div>
-        </div>
       </div>
 </body>
 </html>
