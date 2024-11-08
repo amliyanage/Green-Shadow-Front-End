@@ -1,0 +1,16 @@
+h1{
+    color: var(--font-color);
+    font-size: 28px;
+    font-weight: 600;
+}
+
+p{
+    color: var(--sub-text-font);
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.dashboard-header .profile-img{
+    width: 50px;
+    height: 50px;
+}

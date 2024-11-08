@@ -1,0 +1,31 @@
+body{
+    background-color: #ABFFB8;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body > div{
+    width: 80%;
+    height: 80%;
+    background-image: url('../assets/background.png');
+    background-size: cover;
+}
+
+.main-container .nav-bar{
+    width: 6vw;
+    background-color: #FFFF;
+    border: 2px solid #EAEAEA;
+}
+
+.main-container .nav-bar div img{
+    width: 32px;
+    height: 32px;
+}
+
+.main-container .nav-bar div > :first-child{
+    width: 28px;
+    height: 28px;
+}
