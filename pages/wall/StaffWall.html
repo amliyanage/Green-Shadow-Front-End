@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="/css/Wall/StaffWall.css" />
   </head>
   <body class="p-5 bg-transparent">
+
+
     <!-- save staff popup start -->
 
     <div
@@ -128,6 +130,123 @@
     </div>
 
     <!-- save staff popup end -->
+
+    <!-- update staff popup start -->
+
+    <div
+      id="update-staff-popup"
+      class="position-absolute start-0 end-0 top-0 bottom-0 w-100 h-auto justify-content-center align-items-center"
+    >
+      <div class="w-75 h-auto p-4">
+        <img class="float-end" src="/assets/icon/close-btn.svg" />
+        <h2 class="mt-3 mb-3">Update Staff Member</h2>
+        <div class="w-100 h-auto form-set d-grid">
+          <div>
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control first-name-text"
+                id="floatingInput"
+                placeholder=""
+              />
+              <label for="floatingInput">First Name</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control last-name-text"
+                id="floatingInput"
+                placeholder="name@example.com"
+              />
+              <label for="floatingInput">Last Name</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control destination-text"
+                id="floatingInput"
+                placeholder="name@example.com"
+              />
+              <label for="floatingInput">Designation</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="date"
+                class="form-control join-date-text"
+                id="floatingInput"
+                placeholder="name@example.com"
+              />
+              <label for="floatingInput">Join Date</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="date"
+                class="form-control dob-text"
+                id="floatingInput"
+                placeholder="name@example.com"
+              />
+              <label for="floatingInput">Date of Birth</label>
+            </div>
+          </div>
+          <div>
+            <div class="form-floating mb-3">
+              <select
+                class="form-control gender-combo"
+                id="floatingSelect"
+                aria-label="Floating label select example"
+              >
+                <option value="" disabled selected>Select an option</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+              </select>
+              <label for="floatingSelect">Gender</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control address-text"
+                id="floatingInput"
+                placeholder="name@example.com"
+              />
+              <label for="floatingInput">Address</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                class="form-control contact-text"
+                id="floatingInput"
+                placeholder="name@example.com"
+              />
+              <label for="floatingInput">Contact No.</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="email"
+                class="form-control email-text"
+                id="floatingInput"
+                placeholder="name@example.com"
+              />
+              <label for="floatingInput">Email</label>
+            </div>
+            <div class="form-floating mb-3">
+              <select
+                class="form-control role-combo"
+                id="floatingSelect"
+                aria-label="Floating label select example"
+              >
+                <option value="" disabled selected>Select an option</option>
+                <option value="Secintist">Secintist</option>
+                <option value="User">User</option>
+              </select>
+              <label for="floatingSelect">Role</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- update staff popup end -->
+
 
     <h1>Staff Management</h1>
     <div class="d-flex justify-content-between align-items-center mt-5">
@@ -533,6 +652,12 @@
         })
         $('#save-staff-popup img').click(function(){
           $('#save-staff-popup').removeClass('d-flex');
+        })
+        $('.table .table-body .action > :nth-child(1)').click(function(){
+          $('#update-staff-popup').addClass('d-flex');
+        })
+        $('#update-staff-popup img').click(function(){
+          $('#update-staff-popup').removeClass('d-flex')
         })
     </script>
   </body>
