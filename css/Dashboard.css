@@ -1,31 +1,56 @@
-body{
-    background-color: #ABFFB8;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body {
+  background-color: #abffb8;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-body > div{
-    width: 80%;
-    height: 80%;
-    background-image: url('../assets/background.png');
-    background-size: cover;
+body > div {
+  width: 80%;
+  height: 80%;
+  background-image: url("../assets/background.png");
+  background-size: cover;
 }
 
-.main-container .nav-bar{
-    width: 6vw;
-    background-color: #FFFF;
-    border: 2px solid #EAEAEA;
+.main-container .nav-bar {
+  width: 6vw;
+  background-color: #ffff;
+  border-right: 2px solid #eaeaea;
 }
 
-.main-container .nav-bar div img{
-    width: 32px;
-    height: 32px;
+.main-container .nav-bar div img {
+  width: 1.4vw;
+  height: 1.4vw;
 }
 
-.main-container .nav-bar div > :first-child{
-    width: 28px;
-    height: 28px;
+.main-container .nav-bar div > :first-child {
+  width: 1.1vw;
+  height: 1.1vw;
+}
+
+.nav-bar > img{
+  width: 1.8vw;
+  height: auto;
+}
+
+@media screen and (max-width: 1440px) {
+  body > div {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  body > div {
+    width: 95%;
+  }
+  .main-container .nav-bar div img {
+    width: 2vw;
+    height: 2vw;
+  }
+  .main-container .nav-bar div > :first-child {
+    width: 1.6vw;
+    height: 1.6vw;
+  }
 }
