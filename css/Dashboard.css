@@ -8,8 +8,8 @@ body {
 }
 
 body > div {
-  width: 80%;
-  height: 80%;
+  width: 90%;
+  height: 90%;
   background-image: url("../assets/background.png");
   background-size: cover;
 }
@@ -43,7 +43,7 @@ body > div {
 
 @media screen and (max-width: 1024px) {
   body > div {
-    width: 95%;
+    width: 98%;
   }
   .main-container .nav-bar div img {
     width: 2vw;
