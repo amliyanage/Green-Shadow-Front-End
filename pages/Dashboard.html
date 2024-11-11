@@ -23,16 +23,16 @@
           <img class="dashboard-icon" src="/assets/icon/dashboard_icon.svg" />
           <img class="staff-icon" src="/assets/icon/staff_icon.svg" />
           <img class="vehicle" src="/assets/icon/vehicle.svg" />
+          <img class="field-icon" src="/assets/icon/field_icon.svg" />
           <img class="crop_icon" src="/assets/icon/crop_icon.svg" />
           <img class="rqu_icon" src="/assets/icon/rqu_icon.svg" />
           <img class="monitor_log" src="/assets/icon/monitor_log.svg" />
-          <img class="field_icon" src="/assets/icon/field_icon.svg" />
         </div>
       </div>
       <div class="w-100">
         <iframe
           class="main-wall w-100 h-100"
-          src="/pages/wall/VehicleWall.html"
+          src="/pages/wall/FieldWall.html"
           frameborder="0"
         ></iframe>
       </div>
@@ -65,6 +65,14 @@
         $(".main-container .main-wall").attr(
           "src",
           "/pages/wall/VehicleWall.html"
+        );
+      });
+
+      $(".field-icon").click(function () {
+        changeButtonColor("field-icon");
+        $(".main-container .main-wall").attr(
+          "src",
+          "/pages/wall/FieldWall.html"
         );
       });
 
