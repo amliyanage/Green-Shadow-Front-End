@@ -54,4 +54,67 @@ input + button {
     font-weight: 600;
 }
 
+#save-field-popup , #update-staff-popup , #view-staff-popup{
+  display: none;
+  animation: wipe 0.2s ease-in-out;
+}
 
+@keyframes wipe {
+  0% {
+    transform: translateY(-100%); /* Start off-screen */
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0); /* End at normal position */
+    opacity: 1;
+  }
+}
+
+#save-field-popup > div , #update-staff-popup > div , #view-staff-popup > div{
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.956);
+  box-shadow: 0px 1px 26px 3px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(2.5px);
+}
+
+#save-field-popup h2 , #update-staff-popup h2 , #view-staff-popup h2{
+  font-size: 1.4vw;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  color: #009444;
+}
+
+#save-field-popup .field-set{
+    grid-template-columns: repeat(2,1fr);
+}
+
+#mapModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    #mapModalContent {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      width: 80%;
+      height: 80%;
+      position: relative;
+    }
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+    #closeModal {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      font-size: 20px;
+    }

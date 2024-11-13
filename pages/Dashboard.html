@@ -24,15 +24,15 @@
           <img class="staff-icon" src="/assets/icon/staff_icon.svg" />
           <img class="vehicle" src="/assets/icon/vehicle.svg" />
           <img class="field-icon" src="/assets/icon/field_icon.svg" />
-          <img class="crop_icon" src="/assets/icon/crop_icon.svg" />
           <img class="rqu_icon" src="/assets/icon/rqu_icon.svg" />
+          <img class="crop_icon" src="/assets/icon/crop_icon.svg" />
           <img class="monitor_log" src="/assets/icon/monitor_log.svg" />
         </div>
       </div>
       <div class="w-100">
         <iframe
           class="main-wall w-100 h-100"
-          src="/pages/wall/FieldWall.html"
+          src="/pages/wall/EquWall.html"
           frameborder="0"
         ></iframe>
       </div>
@@ -73,6 +73,14 @@
         $(".main-container .main-wall").attr(
           "src",
           "/pages/wall/FieldWall.html"
+        );
+      });
+
+      $(".rqu_icon").click(function () {
+        changeButtonColor("rqu_icon");
+        $(".main-container .main-wall").attr(
+          "src",
+          "/pages/wall/EquWall.html"
         );
       });
 
