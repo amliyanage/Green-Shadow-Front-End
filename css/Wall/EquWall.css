@@ -92,7 +92,7 @@ svg {
   transition: 0.5s;
 }
 
-#save-equ-popup , #update-vehicle-popup , #view-vehicle-popup{
+#save-equ-popup , #update-equ-popup , #view-vehicle-popup{
   display: none;
   animation: wipe 0.2s ease-in-out;
 }
@@ -108,19 +108,19 @@ svg {
   }
 }
 
-#save-equ-popup > div , #update-vehicle-popup > div , #view-vehicle-popup > div{
+#save-equ-popup > div , #update-equ-popup > div , #view-vehicle-popup > div{
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.956);
   box-shadow: 0px 1px 26px 3px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(2.5px);
 }
 
-#save-equ-popup .form-set , #update-vehicle-popup .form-set , #view-vehicle-popup .form-set{
+#save-equ-popup .form-set , #update-equ-popup .form-set , #view-vehicle-popup .form-set{
   grid-template-columns: repeat(2,1fr);
   column-gap: 20px;
 }
 
-#save-equ-popup h2 , #update-vehicle-popup h2 , #view-vehicle-popup h2{
+#save-equ-popup h2 , #update-equ-popup h2 , #view-vehicle-popup h2{
   font-size: 1.4vw;
   font-weight: 500;
   letter-spacing: 0.6px;
@@ -142,7 +142,7 @@ svg {
   .table .table-body .action > :nth-child(3) {
     width: 1.7vw;
   }
-  #save-equ-popup h2 , #update-vehicle-popup h2 , #view-vehicle-popup h2{
+  #save-equ-popup h2 , #update-equ-popup h2 , #view-vehicle-popup h2{
     font-size: 2vw;
   }
 }
