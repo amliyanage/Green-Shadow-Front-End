@@ -32,7 +32,7 @@
       <div class="w-100">
         <iframe
           class="main-wall w-100 h-100"
-          src="/pages/wall/EquWall.html"
+          src="/pages/wall/CropWall.html"
           frameborder="0"
         ></iframe>
       </div>
@@ -81,6 +81,14 @@
         $(".main-container .main-wall").attr(
           "src",
           "/pages/wall/EquWall.html"
+        );
+      });
+
+      $(".crop_icon").click(function () {
+        changeButtonColor("crop_icon");
+        $(".main-container .main-wall").attr(
+          "src",
+          "/pages/wall/CropWall.html"
         );
       });
 
