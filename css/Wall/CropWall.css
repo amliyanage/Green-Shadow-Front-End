@@ -51,7 +51,7 @@ input + button {
     font-weight: 600;
 }
 
-#save-crop-popup , #update-crop-popup , #view-equ-popup{
+#save-crop-popup , #update-crop-popup , #view-crop-popup{
   display: none;
   animation: wipe 0.2s ease-in-out;
 }
@@ -67,19 +67,25 @@ input + button {
   }
 }
 
-#save-crop-popup > div , #update-crop-popup > div , #view-equ-popup > div{
+#save-crop-popup > div , #update-crop-popup > div , #view-crop-popup > div{
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.956);
   box-shadow: 0px 1px 26px 3px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(2.5px);
 }
 
-#save-crop-popup .form-set , #update-crop-popup .form-set , #view-equ-popup .form-set{
+#save-crop-popup .form-set , #update-crop-popup .form-set , #view-crop-popup .form-set{
   grid-template-columns: repeat(2,1fr);
   column-gap: 20px;
 }
 
-#save-crop-popup h2 , #update-crop-popup h2 , #view-equ-popup h2{
+#view-crop-popup .field-img{
+  height: 40vh;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+#save-crop-popup h2 , #update-crop-popup h2 , #view-crop-popup h2{
   font-size: 1.4vw;
   font-weight: 500;
   letter-spacing: 0.6px;
@@ -142,7 +148,7 @@ input + button {
   .table .table-body .action > :nth-child(3) {
     width: 1.7vw;
   }
-  #save-equ-popup h2 , #update-crop-popup h2 , #view-equ-popup h2{
+  #save-equ-popup h2 , #update-crop-popup h2 , #view-crop-popup h2{
     font-size: 2vw;
   }
 }
