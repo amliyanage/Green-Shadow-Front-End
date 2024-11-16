@@ -32,7 +32,7 @@
       <div class="w-100">
         <iframe
           class="main-wall w-100 h-100"
-          src="/pages/wall/CropWall.html"
+          src="/pages/wall/CropDetailsWall.html"
           frameborder="0"
         ></iframe>
       </div>
@@ -89,6 +89,14 @@
         $(".main-container .main-wall").attr(
           "src",
           "/pages/wall/CropWall.html"
+        );
+      });
+
+      $(".monitor_log").click(function () {
+        changeButtonColor("monitor_log");
+        $(".main-container .main-wall").attr(
+          "src",
+          "/pages/wall/CropDetailsWall.html"
         );
       });
 
