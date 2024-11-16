@@ -51,7 +51,7 @@ input + button {
     font-weight: 600;
 }
 
-#save-log-popup , #update-crop-popup , #view-crop-popup{
+#save-log-popup , #update-log-popup , #view-crop-popup{
   display: none;
   animation: wipe 0.2s ease-in-out;
 }
@@ -67,14 +67,14 @@ input + button {
   }
 }
 
-#save-log-popup > div , #update-crop-popup > div , #view-crop-popup > div{
+#save-log-popup > div , #update-log-popup > div , #view-crop-popup > div{
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.956);
   box-shadow: 0px 1px 26px 3px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(2.5px);
 }
 
-#save-log-popup .form-set , #update-crop-popup .form-set , #view-crop-popup .form-set{
+#save-log-popup .form-set , #update-log-popup .form-set , #view-crop-popup .form-set{
   grid-template-columns: repeat(2,1fr);
   column-gap: 20px;
 }
@@ -85,7 +85,7 @@ input + button {
   object-fit: cover;
 }
 
-#save-log-popup h2 , #update-crop-popup h2 , #view-crop-popup h2{
+#save-log-popup h2 , #update-log-popup h2 , #view-crop-popup h2{
   font-size: 1.4vw;
   font-weight: 500;
   letter-spacing: 0.6px;
@@ -148,7 +148,7 @@ input + button {
   .table .table-body .action > :nth-child(3) {
     width: 1.7vw;
   }
-  #save-log-popup h2 , #update-crop-popup h2 , #view-crop-popup h2{
+  #save-log-popup h2 , #update-log-popup h2 , #view-crop-popup h2{
     font-size: 2vw;
   }
 }
