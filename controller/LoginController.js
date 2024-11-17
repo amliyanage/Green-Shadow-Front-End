@@ -1,3 +1,4 @@
+import { getCookie, saveCookie } from "../service/ToeknService.js";
 import { login } from "../service/UserService.js";
 
 $(document).ready(function () {
@@ -14,7 +15,6 @@ $(document).ready(function () {
     }
   });
 });
-
 
 $(".cssbuttons-io-button").click(function () {
   const email = $(".email-input").val();
@@ -42,19 +42,17 @@ $(".cssbuttons-io-button").click(function () {
   if ($("#checkbox").prop("checked")) {
     login(email, password)
       .then((response) => {
+        alert("awaaa");
         const token = response.token;
-        saveCookie("authToken", token, 3600);
+        saveCookie("authToken", token);
+        console.log("Token saved as cookie:", getCookie("authToken") );
         window.location = "/pages/Dashboard.html";
       })
       .catch((error) => {
+        console.log("Error:", error);
         notyf.error("Invalid email or password.");
       });
   } else {
     notyf.error("Please accept the terms and conditions.");
   }
 });
-
-function saveCookie(name, value, maxAge) {
-    document.cookie = `${name}=${value}; max-age=${maxAge}; path=/; Secure; HttpOnly; SameSite=Strict`;
-    console.log("Token saved as cookie:", document.cookie);
-}

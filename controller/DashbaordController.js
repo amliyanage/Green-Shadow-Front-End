@@ -1,6 +1,10 @@
+import { getCookie, saveCookie, tokenRefresh } from "../service/ToeknService.js";
+
 $(document).ready(function () {
     changeButtonColor("dashboard-icon");
 });
+
+//setInterval(refreshToken, 5000);
 
 $(".dashboard-icon").click(function () {
   changeButtonColor("dashboard-icon");
@@ -53,4 +57,16 @@ function changeButtonColor(button) {
       $(".nav-bar ." + className).attr("src", `/assets/icon/${imageName}.svg`);
     }
   });
+}
+
+function refreshToken(){
+  tokenRefresh()
+    .then((response) => {
+      const token = response.token;
+      saveCookie("authToken", token);
+      console.log("Token refreshed successfully.",getCookie("authToken"));
+    })
+    .catch((error) => {
+      console.error("Token refresh failed.");
+    });
 }
