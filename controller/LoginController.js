@@ -1,5 +1,21 @@
 import { login } from "../service/UserService.js";
 
+$(document).ready(function () {
+  $(".toggle-password").click(function () {
+    const passwordInput = $(".password-input");
+    const eyeIcon = $(this).find("i");
+
+    if (passwordInput.attr("type") === "password") {
+      passwordInput.attr("type", "text");
+      eyeIcon.removeClass("bi-eye").addClass("bi-eye-slash");
+    } else {
+      passwordInput.attr("type", "password");
+      eyeIcon.removeClass("bi-eye-slash").addClass("bi-eye");
+    }
+  });
+});
+
+
 $(".cssbuttons-io-button").click(function () {
   const email = $(".email-input").val();
   const password = $(".password-input").val();

@@ -14,6 +14,15 @@ body > div{
     box-shadow: 0 0 103px 9px rgba(0, 0, 0, 0.25);
 }
 
+.toggle-password i {
+  color: #BDBDBD; /* Set color to BDBDBD */
+  font-size: 20px;
+}
+
+.toggle-password i:hover {
+  color: #757575; /* Optional: Change color on hover */
+}
+
 .main-container{
     grid-template-columns: repeat(2, 1fr);
     padding-left: 20px;
