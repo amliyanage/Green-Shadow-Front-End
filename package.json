@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "jquery": "^3.7.1",
+    "notyf": "^3.10.0"
+  }
+}

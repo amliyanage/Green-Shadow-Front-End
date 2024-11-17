@@ -4,6 +4,23 @@
   font-family: "Poppins", serif;
 }
 
+.notyf__container {
+    position: absolute !important;
+    top: 20px; /* Adjust as needed */
+    right: 20px; /* Adjust as needed */
+    z-index: 10000; /* Ensure it's above other elements */
+    background-image: none;
+    border-radius: 20px;
+  }
+
+.notyf {
+  background: none;
+}
+
+.notyf__toast--upper{
+  border-radius: 18px;
+}
+
 :root {
   --main-color: #009444;
   --font-color: #000;

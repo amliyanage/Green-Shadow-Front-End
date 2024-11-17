@@ -10,6 +10,9 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <!-- Notyf CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css" />
+
       <link rel="stylesheet" href="/css/style.css">
       <link rel="stylesheet" href="/css/RegisterForm.css">
 </head>
@@ -34,19 +37,20 @@
 
                     <div class="d-flex flex-column gap-3">
                         <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                            <input type="email" class="form-control email-input" id="floatingInput" placeholder="name@example.com">
                             <label for="floatingInput">Email address</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                            <input type="password" class="form-control password-input" id="floatingPassword" placeholder="Password">
                             <label for="floatingPassword">Password</label>
                         </div>
                         <div class="form-floating mb-3">
-                              <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                              <select class="form-select role-select" id="floatingSelect" aria-label="Floating label select example">
                                     <option selected>Choose an option</option>
-                                    <option value="1">Option 1</option>
-                                    <option value="2">Option 2</option>
-                                    <option value="3">Option 3</option>
+                                    <option value="MANAGER">MANAGER</option>
+                                    <option value="ADMINISTRATIVE">ADMINISTRATIVE</option>
+                                    <option value="SCIENTIST">SCIENTIST</option>
+                                    <option value="OTHER">OTHER</option>
                               </select>
                               <label for="floatingSelect">Select an option</label>
                         </div>
@@ -85,5 +89,13 @@
                 </button>
             </div>
       </div>
+      <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <!-- Notyf JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
+    <script type="module" src="/controller/RegisterController.js"></script>
 </body>
 </html>
