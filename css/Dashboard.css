@@ -35,6 +35,10 @@ body > div {
   height: auto;
 }
 
+.log-out-btn{
+    width: 1.7vw !important;
+}
+
 @media screen and (max-width: 1440px) {
   body > div {
     width: 90%;

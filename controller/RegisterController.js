@@ -1,4 +1,4 @@
-import { register } from "../service/LoginService.js";
+import { register } from "../service/UserService.js";
 
 $(".cssbuttons-io-button").click(function () {
   const email = $(".email-input").val();
@@ -10,8 +10,7 @@ $(".cssbuttons-io-button").click(function () {
   if (result === true) {
     register(email, password, role)
       .then((response) => {
-        // Correctly using `response` instead of `resolve`
-        const token = response.token; // Assuming the response contains a token
+        const token = response.token;
         document.cookie = `authToken=${token}; max-age=3600; path=/; Secure; HttpOnly; SameSite=Strict`;
         console.log("Token saved as cookie:", document.cookie);
         window.location = "/index.html";
