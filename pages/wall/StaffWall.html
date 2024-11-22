@@ -491,25 +491,6 @@
       integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
       crossorigin="anonymous"
     ></script>
-    <script>
-        $('.add-member-btn').click(function(){
-            $('#save-staff-popup').addClass('d-flex');
-        })
-        $('#save-staff-popup img').click(function(){
-          $('#save-staff-popup').removeClass('d-flex');
-        })
-        $('.table .table-body .action > :nth-child(1)').click(function(){
-          $('#update-staff-popup').addClass('d-flex');
-        })
-        $('#update-staff-popup img').click(function(){
-          $('#update-staff-popup').removeClass('d-flex')
-        })
-        $('.table .table-body .action > :nth-child(3)').click(function(){
-          $('#view-staff-popup').addClass('d-flex');
-        })
-        $('#view-staff-popup img').click(function(){
-          $('#view-staff-popup').removeClass('d-flex')
-        })
-    </script>
+    <script type="module" src="/controller/StaffController.js"></script>
   </body>
 </html>
