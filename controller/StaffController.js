@@ -1,4 +1,4 @@
-import { addStaff, getAllStaff, getStaffMember, updateStaff } from "../service/StaffService.js";
+import { addStaff, deleteStaff, getAllStaff, getStaffMember, updateStaff } from "../service/StaffService.js";
 import { showAlerts } from "./DashbaordController.js";
 
 var tragetStaffId = null;
@@ -35,6 +35,11 @@ $(document).ready(function () {
     $("#view-staff-popup").removeClass("d-flex");
   });
 
+  $(".table").on("click", ".action > :nth-child(2)", function () {
+    tragetStaffId = $(this).data("id");
+    deleteStaffMember();
+  });
+
 });
 
 function loadTable (){
@@ -68,7 +73,7 @@ function loadTable (){
                   fill="#9A9A9A"
                 />
               </svg>
-              <svg
+              <svg data-id="${staff.id}"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="19"
@@ -343,6 +348,30 @@ function loadDataToViewForm () {
     $('#view-staff-popup .role-combo').val(result.role);
   }).catch((error) =>{
     console.log(error);
+  });
+}
+
+function deleteStaffMember(){
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to delete this staff member?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      deleteStaff(tragetStaffId).then((result) =>{
+        loadTable();
+        Swal.fire("Deleted!", "staff member has been deleted.", "success");
+      }).catch((error) =>{
+        console.log(error);
+      });
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire("Cancelled", "Your item is safe.", "info");
+    }
   });
 }
 
