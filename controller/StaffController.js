@@ -1,5 +1,7 @@
-import { addStaff, getAllStaff } from "../service/StaffService.js";
+import { addStaff, getAllStaff, getStaffMember, updateStaff } from "../service/StaffService.js";
 import { showAlerts } from "./DashbaordController.js";
+
+var tragetStaffId = null;
 
 $(document).ready(function () {
 
@@ -14,6 +16,9 @@ $(document).ready(function () {
 
   $(".table").on("click", ".action > :nth-child(1)", function () {
     $("#update-staff-popup").addClass("d-flex");
+    const staffId = $(this).data("id");
+    loadDataToUbdateForm(staffId);
+    tragetStaffId = staffId;
   });
 
   $("#update-staff-popup img").click(function () {
@@ -49,7 +54,7 @@ function loadTable (){
             <div
               class="action d-flex justify-content-center gap-4 align-items-center"
             >
-              <svg
+              <svg data-id="${staff.id}" 
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="22"
@@ -237,7 +242,80 @@ function validateStaffForm(staff) {
     }
   }
 
-  return true; // All validations passed
+  return true; 
 }
 
+function loadDataToUbdateForm(staffId) {
+    getStaffMember(staffId).then((result) =>{
+        $("#update-staff-popup .first-name-text").val(result.firstName);
+        $("#update-staff-popup .last-name-text").val(result.lastName);
+        $("#update-staff-popup .destination-text").val(result.designation);
+        $('#update-staff-popup .join-date-text').val(result.joinedDate.split(" ")[0]);
+        $('#update-staff-popup .dob-text').val(result.DOB.split(" ")[0]);
+        $('#update-staff-popup .gender-combo').val(result.gender);
+        const address = []
+        $("#update-staff-popup .address-text").val(
+          `${result.addressLine1} , ${result.addressLine2} ${
+            result.addressLine3 !== "none" ? " , " + result.addressLine3 : ""
+          } ${
+            result.addressLine4 !== "none" ? " , " + result.addressLine4 : ""
+          } ${result.addressLine5 !== "none" ? " , " + result.addressLine5 : ""}`
+        );
+
+        $('#update-staff-popup .contact-text').val(result.contactNo);
+        $('#update-staff-popup .email-text').val(result.email);
+        $('#update-staff-popup .role-combo').val(result.role);
+    }).catch((error) =>{
+        console.log(error);
+    });
+} 
+
+$("#update-staff-popup button").click(function(){
+  const first_name = $("#update-staff-popup .first-name-text").val();
+  const last_name = $("#update-staff-popup .last-name-text").val();
+  const designation = $("#update-staff-popup .destination-text").val();
+  const join_date = $('#update-staff-popup .join-date-text').val();
+  const dob = $('#update-staff-popup .dob-text').val();
+  const gender = $('#update-staff-popup .gender-combo').val();
+  const address_input = $('#update-staff-popup .address-text').val();
+  const contact = $('#update-staff-popup .contact-text').val();
+  const email = $('#update-staff-popup .email-text').val();
+  const role = $('#update-staff-popup .role-combo').val();
+
+  const address = address_input.split(',');
+  const addressLines = [];
+  for (let i = 0; i < 5; i++) {
+    addressLines[i] = address[i] ? address[i].trim() : "none";
+  }
+
+  const staff = {
+    id : "",
+    firstName: first_name,
+    lastName: last_name,
+    designation: designation,
+    gender: gender,
+    joinedDate: join_date,
+    DOB: dob,
+    addressLine1: addressLines[0],
+    addressLine2: addressLines[1],
+    addressLine3: addressLines[2],
+    addressLine4: addressLines[3],
+    addressLine5: addressLines[4],
+    contactNo: contact,
+    email: email,
+    role: role,
+  };
+
+  if (!validateStaffForm(staff)) {
+    return;
+  }
+  console.log(staff)
+  updateStaff(tragetStaffId, staff).then((result) =>{
+    showAlerts("Staff updated successfully", "success");
+    loadTable();
+  }).catch((error) =>{
+    console.log(error)
+  })
+  
+});
 

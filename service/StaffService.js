@@ -40,3 +40,44 @@ export function addStaff(staff) {
     });
   });
 }
+
+export function getStaffMember(staff_id){
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: `http://localhost:5055/greenshadow/api/v1/staff/${staff_id}`,
+      type: "GET",
+      contentType: "application/json",
+      headers: {
+        Authorization: "Bearer " + getCookie("authToken"),
+      },
+      success: function (result) {
+        console.log(result);
+        resolve(result);
+      },
+      error: function (xhr, status, error) {
+        reject(error);
+      },
+    });
+  });
+}
+
+export function updateStaff(staff_id, staff){
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: `http://localhost:5055/greenshadow/api/v1/staff/${staff_id}`,
+      type: "PATCH",
+      contentType: "application/json",
+      headers: {
+        Authorization: "Bearer " + getCookie("authToken"),
+      },
+      data: JSON.stringify(staff),
+      success: function (result) {
+        console.log(result);
+        resolve(result);
+      },
+      error: function (xhr, status, error) {
+        reject(error);
+      },
+    });
+  });
+}
