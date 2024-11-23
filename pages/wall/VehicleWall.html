@@ -308,25 +308,6 @@
       integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
       crossorigin="anonymous"
     ></script>
-    <script>
-      $('.add-vehicle-btn').click(function(){
-            $('#save-vehicle-popup').addClass('d-flex');
-        })
-        $('#save-vehicle-popup img').click(function(){
-          $('#save-vehicle-popup').removeClass('d-flex');
-        })
-        $('.table .table-body .action > :nth-child(1)').click(function(){
-          $('#update-vehicle-popup').addClass('d-flex');
-        })
-        $('#update-vehicle-popup img').click(function(){
-          $('#update-vehicle-popup').removeClass('d-flex')
-        })
-        $('.table .table-body .action > :nth-child(3)').click(function(){
-          $('#view-vehicle-popup').addClass('d-flex');
-        })
-        $('#view-vehicle-popup img').click(function(){
-          $('#view-vehicle-popup').removeClass('d-flex')
-        })
-    </script>
+    <script type="module" src="/controller/VehicleController.js"></script>
 </body>
 </html>
