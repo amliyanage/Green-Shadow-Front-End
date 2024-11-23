@@ -25,9 +25,11 @@ $(document).ready(function () {
     $("#update-staff-popup").removeClass("d-flex");
   });
 
-  $(".table .table-body .action > :nth-child(3)").click(function () {
-    alert("Are you sure you want to delete this staff?");
+  $(".table").on("click", ".action > :nth-child(3)", function () {
     $("#view-staff-popup").addClass("d-flex");
+    const staffId = $(this).data("id");
+    tragetStaffId = staffId;
+    loadDataToViewForm();
   });
   $("#view-staff-popup img").click(function () {
     $("#view-staff-popup").removeClass("d-flex");
@@ -78,7 +80,7 @@ function loadTable (){
                   fill="#9A9A9A"
                 />
               </svg>
-              <svg
+              <svg data-id="${staff.id}"
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
                 height="14"
@@ -253,7 +255,6 @@ function loadDataToUbdateForm(staffId) {
         $('#update-staff-popup .join-date-text').val(result.joinedDate.split(" ")[0]);
         $('#update-staff-popup .dob-text').val(result.DOB.split(" ")[0]);
         $('#update-staff-popup .gender-combo').val(result.gender);
-        const address = []
         $("#update-staff-popup .address-text").val(
           `${result.addressLine1} , ${result.addressLine2} ${
             result.addressLine3 !== "none" ? " , " + result.addressLine3 : ""
@@ -318,4 +319,31 @@ $("#update-staff-popup button").click(function(){
   })
   
 });
+
+function loadDataToViewForm () {
+  alert(tragetStaffId);
+  getStaffMember(tragetStaffId).then((result) =>{
+    $("#view-staff-popup .staff-id-text").val(result.id);
+    $("#view-staff-popup .first-name-text").val(result.firstName);
+    $("#view-staff-popup .last-name-text").val(result.lastName);
+    $("#view-staff-popup .destination-text").val(result.designation);
+    $('#view-staff-popup .join-date-text').val(result.joinedDate.split(" ")[0]);
+    $('#view-staff-popup .dob-text').val(result.DOB.split(" ")[0]);
+    $('#view-staff-popup .gender-combo').val(result.gender);
+    $("#view-staff-popup .address-text").val(
+      `${result.addressLine1} , ${result.addressLine2} ${
+        result.addressLine3 !== "none" ? " , " + result.addressLine3 : ""
+      } ${
+        result.addressLine4 !== "none" ? " , " + result.addressLine4 : ""
+      } ${result.addressLine5 !== "none" ? " , " + result.addressLine5 : ""}`
+    );
+
+    $('#view-staff-popup .contact-text').val(result.contactNo);
+    $('#view-staff-popup .email-text').val(result.email);
+    $('#view-staff-popup .role-combo').val(result.role);
+  }).catch((error) =>{
+    console.log(error);
+  });
+}
+
 
