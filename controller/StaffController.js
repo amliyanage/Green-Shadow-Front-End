@@ -40,6 +40,21 @@ $(document).ready(function () {
     deleteStaffMember();
   });
 
+   $(".search-bar").on("keyup", function () {
+
+      var searchValue = $(this).val();
+      $(".table .table-body > div").each(function () {
+        const staffId = $(this).children(":nth-child(1)").text();
+        if (staffId.includes(searchValue)) {
+          $(this).css("display", "grid");
+        }
+        else {
+          $(this).css("display", "none");
+        }
+      });
+
+   });
+
 });
 
 function loadTable (){
