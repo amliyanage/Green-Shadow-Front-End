@@ -70,3 +70,34 @@ function refreshToken(){
       console.error("Token refresh failed.");
     });
 }
+
+export function showAlerts(meessage , type){
+  alert("awaa alert")
+  const notyf = new Notyf({
+    duration: 3000,
+    position: {
+      x: "right",
+      y: "top",
+    },
+    types: [
+      {
+        background: "orange",
+        icon: {
+          className: "material-icons",
+          tagName: "i",
+          text: type,
+        },
+      },
+    ],
+  });
+
+  if(type === "success"){
+    notyf.success(meessage);
+  }
+  if(type === "error"){
+    notyf.error(meessage);
+  }
+  if(type === "warning"){
+    notyf.warning(meessage);
+  }
+}

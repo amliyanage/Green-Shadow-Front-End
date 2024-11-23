@@ -1,27 +1,33 @@
-import { getAllStaff } from "../service/StaffService.js";
+import { addStaff, getAllStaff } from "../service/StaffService.js";
+import { showAlerts } from "./DashbaordController.js";
 
 $(document).ready(function () {
-  loadTable();
-});
 
-$(".add-member-btn").click(function () {
-  $("#save-staff-popup").addClass("d-flex");
-});
-$("#save-staff-popup img").click(function () {
-  $("#save-staff-popup").removeClass("d-flex");
-});
-$(".table .table-body .action > :nth-child(1)").click(function () {
-  $("#update-staff-popup").addClass("d-flex");
-});
-$("#update-staff-popup img").click(function () {
-  $("#update-staff-popup").removeClass("d-flex");
-});
-$(".table .table-body .action > :nth-child(3)").click(function () {
-  alert("Are you sure you want to delete this staff?");
-  $("#view-staff-popup").addClass("d-flex");
-});
-$("#view-staff-popup img").click(function () {
-  $("#view-staff-popup").removeClass("d-flex");
+  $(".add-member-btn").click(function () {
+    $("#save-staff-popup").addClass("d-flex");
+  });
+  $("#save-staff-popup img").click(function () {
+    $("#save-staff-popup").removeClass("d-flex");
+  });
+
+  loadTable();
+
+  $(".table").on("click", ".action > :nth-child(1)", function () {
+    $("#update-staff-popup").addClass("d-flex");
+  });
+
+  $("#update-staff-popup img").click(function () {
+    $("#update-staff-popup").removeClass("d-flex");
+  });
+
+  $(".table .table-body .action > :nth-child(3)").click(function () {
+    alert("Are you sure you want to delete this staff?");
+    $("#view-staff-popup").addClass("d-flex");
+  });
+  $("#view-staff-popup img").click(function () {
+    $("#view-staff-popup").removeClass("d-flex");
+  });
+
 });
 
 function loadTable (){
@@ -97,3 +103,141 @@ function dataRefactor(data, maxLength) {
   }
   return data;
 }
+
+
+$("#save-staff-popup button").click(function(){
+  const first_name = $("#save-staff-popup .first-name-text").val();
+  const last_name = $("#save-staff-popup .last-name-text").val();
+  const designation = $("#save-staff-popup .destination-text").val();
+  const join_date = $('#save-staff-popup .join-date-text').val();
+  const dob = $('#save-staff-popup .dob-text').val();
+  const gender = $('#save-staff-popup .gender-combo').val();
+  const address_input = $('#save-staff-popup .address-text').val();
+  const contact = $('#save-staff-popup .contact-text').val();
+  const email = $('#save-staff-popup .email-text').val();
+  const role = $('#save-staff-popup .role-combo').val();
+
+  const address = address_input.split(',');
+
+  const addressLines = [];
+  for (let i = 0; i < 5; i++) {
+    addressLines[i] = address[i] ? address[i].trim() : "none";
+  }
+
+  const staff = {
+    firstName: first_name,
+    lastName: last_name,
+    designation: designation,
+    gender: gender,
+    joinedDate: join_date,
+    DOB: dob,
+    addressLine1: addressLines[0],
+    addressLine2: addressLines[1],
+    addressLine3: addressLines[2],
+    addressLine4: addressLines[3],
+    addressLine5: addressLines[4],
+    contactNo: contact,
+    email: email,
+    role: role,
+  };
+
+  if (!validateStaffForm(staff)) {
+      return;
+  }
+
+  addStaff(staff).then((result) =>{
+    showAlerts("Staff added successfully", "success");
+    clearField();
+    loadTable();
+  }).catch((error) =>{  
+    showAlerts("Email already exists", "error");
+  });
+});
+
+function clearField () {
+  $("#save-staff-popup .first-name-text").val("");
+  $("#save-staff-popup .last-name-text").val("");
+  $("#save-staff-popup .destination-text").val("");
+  $('#save-staff-popup .join-date-text').val("");
+  $('#save-staff-popup .dob-text').val("");
+  $('#save-staff-popup .gender-combo').val("");
+  $('#save-staff-popup .address-text').val("");
+  $('#save-staff-popup .contact-text').val("");
+  $('#save-staff-popup .email-text').val("");
+  $('#save-staff-popup .role-combo').val("");
+}
+
+function validateStaffForm(staff) {
+  if (!staff.firstName || staff.firstName.trim() === "") {
+    showAlerts("First name is required.", "error");
+    return false;
+  }
+  if (!/^[A-Z]/.test(staff.firstName.trim())) {
+    showAlerts("First name must start with a capital letter.", "error");
+    return false;
+  }
+  if (!staff.lastName || staff.lastName.trim() === "") {
+    showAlerts("Last name is required.", "error");
+    return false;
+  }
+  if (!/^[A-Z]/.test(staff.lastName.trim())) {
+    showAlerts("Laste name must start with a capital letter.", "error");
+    return false;
+  }
+  if (!staff.designation || staff.designation.trim() === "") {
+    showAlerts("Designation is required.", "error");
+    return false;
+  }
+  if (!staff.gender || staff.gender.trim() === "") {
+    showAlerts("Gender is required.", "error");
+    return false;
+  }
+  if (!staff.joinedDate || isNaN(new Date(staff.joinedDate).getTime())) {
+    showAlerts("Please provide a valid join date.", "error");
+    return false;
+  }
+  if (!staff.DOB || isNaN(new Date(staff.DOB).getTime())) {
+    showAlerts("Please provide a valid date of birth.", "error");
+    return false;
+  }
+  if (!staff.contactNo || !/^\d{10}$/.test(staff.contactNo)) {
+    showAlerts("Contact number must be a 10-digit number.", "error");
+    return false;
+  }
+  if (!staff.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(staff.email)) {
+    showAlerts("Please provide a valid email address.", "error");
+    return false;
+  }
+  if (!staff.role || staff.role.trim() === "") {
+    showAlerts("Role is required.", "error");
+    return false;
+  }
+
+  const addressLines = [
+    staff.addressLine1,
+    staff.addressLine2,
+    staff.addressLine3,
+    staff.addressLine4,
+    staff.addressLine5,
+  ].filter((line) => line && line !== "none");
+
+  if (addressLines.length < 2) {
+    showAlerts("At least two lines of address are required.", "error");
+    return false;
+  }
+
+  const addressRegex = /^[A-Z][a-zA-Z0-9\s]*$/;
+  for (const line of addressLines) {
+    if (!addressRegex.test(line)) {
+      showAlerts(
+        "Each address line must start with a capital letter and only contain letters, numbers, and spaces.",
+        "error"
+      );
+      return false;
+    }
+  }
+
+  return true; // All validations passed
+}
+
+
