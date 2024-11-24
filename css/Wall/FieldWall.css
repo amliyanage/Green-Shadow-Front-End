@@ -54,6 +54,14 @@ input + button {
   font-weight: 600;
 }
 
+.field-card > :first-child{
+  height: 25vh;
+}
+
+.field-card > :first-child img{
+  object-fit: cover;
+}
+
 #save-field-popup,
 #update-staff-popup,
 #view-staff-popup {

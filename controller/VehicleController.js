@@ -61,12 +61,12 @@ function loadTable() {
             <h5>${dataRefactor(element.vehicleCode, 20)}</h5>
             <h5>${dataRefactor(element.licensePlateNumber, 10)}</h5>
             <h5>${dataRefactor(element.vehicleCategory, 10)}</h5>
-            <h5>decel</h5>
+            <h5>${dataRefactor(element.fuelType, 10)}</h5>
             <h5>
               <div class="active-col ${
                 element.staff ? "text-success" : "text-danger"
               }">
-                ${element.staff ? "Active" : "Disactive"}
+                ${element.staff ? "Available" : "Not Available"}
               </div>
             </h5>
             <div

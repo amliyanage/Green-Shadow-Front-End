@@ -21,22 +21,22 @@ export function getAllField(){
 }
 
 export function saveField(formData) {
-  return new Promise((resolve, reject) => {
-    $.ajax({
-      url: "http://localhost:5055/greenshadow/api/v1/field",
-      type: "POST",
-      headers: {
-        Authorization: "Bearer " + getCookie("authToken"), // Ensure token is valid
-      },
-      data: formData,
-      processData: false, // Prevent jQuery from processing the data
-      contentType: false, // Let FormData set the correct content type
-      success: function (result) {
-        resolve(result);
-      },
-      error: function (xhr, status, error) {
-        reject(error);
-      },
-    });
-  });
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: "http://localhost:5055/greenshadow/api/v1/field",
+            type: "POST",
+            headers: {
+                Authorization: "Bearer " + getCookie("authToken"), // Ensure token is valid
+            },
+            data: formData,
+            processData: false,  // Prevent jQuery from processing the data
+            contentType: false,  // Let FormData set the correct content type
+            success: function(result) {
+                resolve(result);
+            },
+            error: function(xhr, status, error) {
+                reject(error);
+            }
+        });
+    })
 }

@@ -27,11 +27,11 @@ function loadTable() {
                 
                 <div class="field-card p-3 bg-white shadow rounded-4">
         <div
-          class="w-100 h-auto object-fit-cover overflow-hidden rounded-4 rounded-bottom-0"
+          class="w-100 object-fit-cover overflow-hidden rounded-4 rounded-bottom-0"
         >
           <img
             class="w-100 h-100"
-            src="https://touringwithpk.com/wp-content/uploads/2021/07/101-0172_IMGa-591x432.jpg"
+            src="${base64ToImageURL(element.image1)}"
             alt=""
           />
         </div>
@@ -103,6 +103,10 @@ function dataRefactor(data, maxLength) {
   return data;
 }
 
+function base64ToImageURL(base64Data) {
+  return `data:image/png;base64,${base64Data}`;
+}
+
 function loadMap() {
   let map;
   let marker;
@@ -150,7 +154,8 @@ $("#save-field-popup button").click(function () {
     console.log("Please select both images.");
     return; // Exit if no file is selected
   }
-
+  console.log(fieldName, fieldSize, image1.files[0], image2.files[0]);
+  console.log(Longitude, Latitude);
   const formData = new FormData();
   formData.append("fieldName", fieldName);
   formData.append("fieldSize", fieldSize);
@@ -158,13 +163,12 @@ $("#save-field-popup button").click(function () {
   formData.append("image2", image2.files[0]);
   formData.append("fieldLocationX", Longitude);
   formData.append("fieldLocationY", Latitude);
+  console.log(formData);
 
   saveField(formData)
     .then((result) => {
-      console.log(result);
       loadTable();
       showAlerts("Field saved successfully", "success");
-      $("#save-field-popup").removeClass("d-flex");
     })
     .catch((error) => {
       console.log(error);
