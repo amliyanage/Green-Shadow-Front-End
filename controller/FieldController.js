@@ -1,18 +1,25 @@
 import { getAllField } from "../service/FieldService.js";
 
-$(document).ready(function(){
-    loadTable();
-})
+$(document).ready(function () {
+  loadTable();
+  loadMap();
 
-function loadTable (){
+  $(".add-field-btn").click(function () {
+    $("#save-field-popup").addClass("d-flex");
+  });
+  $("#save-field-popup img").click(function () {
+    $("#save-field-popup").removeClass("d-flex");
+  });
 
-    const table = $("#card-set");
-    table.empty();
+});
 
-    getAllField().then((result) =>{
-        result.forEach(element => {
-            
-            table.append(`
+function loadTable() {
+  const table = $("#card-set");
+  table.empty();
+
+  getAllField().then((result) => {
+    result.forEach((element) => {
+      table.append(`
                 
                 <div class="field-card p-3 bg-white shadow rounded-4">
         <div
@@ -81,10 +88,8 @@ function loadTable (){
       </div>
             
             `);
-
-        });
-    })
-    
+    });
+  });
 }
 
 function dataRefactor(data, maxLength) {
@@ -92,4 +97,39 @@ function dataRefactor(data, maxLength) {
     return data.substring(0, maxLength) + " ...";
   }
   return data;
+}
+
+function loadMap() {
+  let map;
+  let marker;
+  const defaultLocation = { lat: 6.0367, lng: 80.217 }; // Galle
+
+  function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: defaultLocation,
+      zoom: 13,
+    });
+
+    marker = new google.maps.Marker({
+      position: defaultLocation,
+      map: map,
+    });
+
+    map.addListener("click", (event) => {
+      const clickedLocation = event.latLng;
+
+      if (marker) marker.setMap(null);
+
+      marker = new google.maps.Marker({
+        position: clickedLocation,
+        map: map,
+      });
+
+      alert(
+        `Latitude: ${clickedLocation.lat()}, Longitude: ${clickedLocation.lng()}`
+      );
+    });
+  }
+
+  initMap();
 }

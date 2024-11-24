@@ -27,34 +27,36 @@ input + button {
   letter-spacing: 0.6px;
 }
 
-.table{
-    grid-template-columns: repeat(5,1fr);
+.table {
+  grid-template-columns: repeat(5, 1fr);
 }
 
-#card-set{
-    display: grid;
-    grid-template-columns: repeat(4 ,1fr);
-    gap: 20px;
-    max-height: 64vh;
-    overflow-y: scroll;
+#card-set {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-height: 64vh;
+  overflow-y: scroll;
 }
 
-#card-set::-webkit-scrollbar{
-    width: 0;
+#card-set::-webkit-scrollbar {
+  width: 0;
 }
 
-.field-card h3{
-    font-size: 13px;
-    font-weight: 600;
-    color: rgb(97, 97, 97);
+.field-card h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgb(97, 97, 97);
 }
 
-.field-card h2{
-    font-size: 16px;
-    font-weight: 600;
+.field-card h2 {
+  font-size: 16px;
+  font-weight: 600;
 }
 
-#save-field-popup , #update-staff-popup , #view-staff-popup{
+#save-field-popup,
+#update-staff-popup,
+#view-staff-popup {
   display: none;
   animation: wipe 0.2s ease-in-out;
 }
@@ -70,51 +72,85 @@ input + button {
   }
 }
 
-#save-field-popup > div , #update-staff-popup > div , #view-staff-popup > div{
+#save-field-popup > div,
+#update-staff-popup > div,
+#view-staff-popup > div {
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.956);
   box-shadow: 0px 1px 26px 3px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(2.5px);
 }
 
-#save-field-popup h2 , #update-staff-popup h2 , #view-staff-popup h2{
+#save-field-popup h2,
+#update-staff-popup h2,
+#view-staff-popup h2 {
   font-size: 1.4vw;
   font-weight: 500;
   letter-spacing: 0.6px;
   color: #009444;
 }
 
-#save-field-popup .field-set{
-    grid-template-columns: repeat(2,1fr);
+#save-field-popup .form-set {
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 20px;
+}
+
+#save-field-popup #map {
+  height: 500px;
+  width: 100%;
 }
 
 #mapModal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-    }
-    #mapModalContent {
-      background-color: white;
-      padding: 20px;
-      border-radius: 5px;
-      width: 80%;
-      height: 80%;
-      position: relative;
-    }
-    #map {
-      width: 100%;
-      height: 100%;
-    }
-    #closeModal {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      cursor: pointer;
-      font-size: 20px;
-    }
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+#mapModalContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 80%;
+  height: 80%;
+  position: relative;
+}
+#map {
+  width: 100%;
+  height: 100%;
+}
+#closeModal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+@media screen and (max-width: 1024px) {
+  input,
+  .add-member-btn {
+    font-size: 1.5vw;
+  }
+  .table h5 {
+    font-size: 1.3vw;
+  }
+  svg {
+    width: 1.4vw;
+    height: 100%;
+  }
+  #card-set .action > :nth-child(3) {
+    width: 1.7vw;
+  }
+  #save-field-popup h2,
+  #update-staff-popup h2,
+  #view-staff-popup h2 {
+    font-size: 2vw;
+  }
+}
+
+@media screen and (max-width: 1024px) {}
