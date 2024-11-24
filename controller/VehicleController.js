@@ -1,5 +1,5 @@
 import { getAllStaff } from "../service/StaffService.js";
-import { addVehicle, getAllVehicles, getVehicle, updateVehicle } from "../service/VehicleService.js";
+import { addVehicle, deleteVehicle, getAllVehicles, getVehicle, updateVehicle } from "../service/VehicleService.js";
 import { showAlerts } from "./DashbaordController.js";
 
 var targetVehicleId = null;
@@ -26,6 +26,11 @@ $(document).ready(function () {
   });
   $("#view-vehicle-popup img").click(function () {
     $("#view-vehicle-popup").removeClass("d-flex");
+  });
+
+  $(".table").on("click", ".action > :nth-child(2)", function () {
+    targetVehicleId = $(this).data("id");
+    deleteVehicleFrom();
   });
 
   loadTable();
@@ -67,7 +72,7 @@ function loadTable() {
                   fill="#9A9A9A"
                 />
               </svg>
-              <svg
+              <svg data-id="${element.vehicleCode}"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="19"
@@ -250,4 +255,32 @@ function setDataToViewForm(){
   }).catch((error) => {
     console.log(error);
   });
+}
+
+function deleteVehicleFrom(){
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to delete this Vehicle?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      deleteVehicle(targetVehicleId)
+        .then((result) => {
+          loadTable();
+          Swal.fire("Deleted!", "Vehicle has been deleted.", "success");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire("Cancelled", "Your item is safe.", "info");
+    }
+  });
+
 }
