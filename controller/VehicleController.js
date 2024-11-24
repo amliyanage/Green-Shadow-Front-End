@@ -185,11 +185,20 @@ function clearFields(){
 function loadDataToUbdateForm(){
   getVehicle(targetVehicleId).then((result) => {
     $("#update-vehicle-popup .remark-text").val(result.remarks);
+    console.log(result);
+    if (result.staffId) {
+      $("#update-vehicle-popup .staff-combo").val(result.staffId);
+    }
+    else {
+      $("#update-vehicle-popup .staff-combo").val("");
+    }
   }).catch((error) => {
     console.log(error);
   });
   getAllStaff().then((result) => {
     const selecter = $('#update-vehicle-popup .staff-combo');
+    selecter.empty()
+    selecter.append($("<option>").val("N/A").text("No one"));
     $.each(result,function(index,member){
       const option = $("<option>").val(member.id).text(member.id)
 
@@ -213,7 +222,6 @@ $("#update-vehicle-popup button").click(function () {
       status : "Active",
       remarks : remarkText,
     };
-
     updateVehicle(targetVehicleId, updateVehicleObj, selectValue).then((result) => {
       console.log(result);
       showAlerts("Vehicle updated successfully", "success");
