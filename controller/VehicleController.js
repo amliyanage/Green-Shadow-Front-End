@@ -1,5 +1,8 @@
-import { addVehicle, getAllVehicles } from "../service/VehicleService.js";
+import { getAllStaff } from "../service/StaffService.js";
+import { addVehicle, getAllVehicles, getVehicle, updateVehicle } from "../service/VehicleService.js";
 import { showAlerts } from "./DashbaordController.js";
+
+var targetVehicleId = null;
 
 $(document).ready(function () {
   $(".add-vehicle-btn").click(function () {
@@ -8,8 +11,10 @@ $(document).ready(function () {
   $("#save-vehicle-popup img").click(function () {
     $("#save-vehicle-popup").removeClass("d-flex");
   });
-  $(".table .table-body .action > :nth-child(1)").click(function () {
+  $(".table").on("click", ".action > :nth-child(1)", function () {
+    targetVehicleId = $(this).data("id");
     $("#update-vehicle-popup").addClass("d-flex");
+    loadDataToUbdateForm();
   });
   $("#update-vehicle-popup img").click(function () {
     $("#update-vehicle-popup").removeClass("d-flex");
@@ -40,15 +45,15 @@ function loadTable() {
             <h5>decel</h5>
             <h5>
               <div class="active-col ${
-                element.staffId ? "text-success" : "text-danger"
+                element.staff ? "text-success" : "text-danger"
               }">
-                ${element.staffId ? "Active" : "Disactive"}
+                ${element.staff ? "Active" : "Disactive"}
               </div>
             </h5>
             <div
               class="action d-flex justify-content-center gap-4 align-items-center"
             >
-              <svg
+              <svg data-id="${element.vehicleCode}"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="22"
@@ -176,3 +181,48 @@ function clearFields(){
   const fuelType = $("#save-vehicle-popup .fuel-type").val("");
   const remarks = $("#save-vehicle-popup .remarks").val("");
 }
+
+function loadDataToUbdateForm(){
+  getVehicle(targetVehicleId).then((result) => {
+    $("#update-vehicle-popup .remark-text").val(result.remarks);
+  }).catch((error) => {
+    console.log(error);
+  });
+  getAllStaff().then((result) => {
+    const selecter = $('#update-vehicle-popup .staff-combo');
+    $.each(result,function(index,member){
+      const option = $("<option>").val(member.id).text(member.id)
+
+      selecter.append(option)
+    })
+  }).catch((error) => {
+    console.log(error);
+  });
+}
+
+$("#update-vehicle-popup button").click(function () {
+  const remarkText = $("#update-vehicle-popup .remark-text").val();
+  const selectValue = $("#update-vehicle-popup .staff-combo").val();
+
+  getVehicle(targetVehicleId).then((result) => {
+    
+    const updateVehicleObj = {
+      licensePlateNumber: result.licensePlateNumber,
+      vehicleCategory : result.vehicleCategory,
+      fuelType : result.fuelType,
+      status : "Active",
+      remarks : remarkText,
+    };
+
+    updateVehicle(targetVehicleId, updateVehicleObj, selectValue).then((result) => {
+      console.log(result);
+      showAlerts("Vehicle updated successfully", "success");
+      loadTable();
+    }).catch((error) => {
+      console.log(error);
+    });
+
+  }).catch((error) => {
+    console.log(error);
+  });
+})
