@@ -1,4 +1,8 @@
-import { getAllField } from "../service/FieldService.js";
+import { getAllField, saveField } from "../service/FieldService.js";
+import { showAlerts } from "./DashbaordController.js";
+
+var Longitude = 0;
+var Latitude = 0;
 
 $(document).ready(function () {
   loadTable();
@@ -124,12 +128,45 @@ function loadMap() {
         position: clickedLocation,
         map: map,
       });
-
-      alert(
-        `Latitude: ${clickedLocation.lat()}, Longitude: ${clickedLocation.lng()}`
-      );
+      Longitude = clickedLocation.lng();
+      Latitude = clickedLocation.lat();
+      // alert(
+      //   `Latitude: ${clickedLocation.lat()}, Longitude: ${clickedLocation.lng()}`
+      // );
     });
   }
 
   initMap();
 }
+
+$("#save-field-popup button").click(function () {
+  const fieldName = $("#save-field-popup .fieldName-text").val();
+  const fieldSize = $("#save-field-popup .fieldSize-text").val();
+  const image1 = $("#save-field-popup .image-1")[0];
+  const image2 = $("#save-field-popup .image-2")[0];
+
+  // Check if files are selected before appending them to FormData
+  if (image1.files.length === 0 || image2.files.length === 0) {
+    console.log("Please select both images.");
+    return; // Exit if no file is selected
+  }
+
+  const formData = new FormData();
+  formData.append("fieldName", fieldName);
+  formData.append("fieldSize", fieldSize);
+  formData.append("image1", image1.files[0]);
+  formData.append("image2", image2.files[0]);
+  formData.append("fieldLocationX", Longitude);
+  formData.append("fieldLocationY", Latitude);
+
+  saveField(formData)
+    .then((result) => {
+      console.log(result);
+      loadTable();
+      showAlerts("Field saved successfully", "success");
+      $("#save-field-popup").removeClass("d-flex");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
