@@ -33,6 +33,18 @@ $(document).ready(function () {
     deleteVehicleFrom();
   });
 
+  $(".search-bar").on("keyup", function () {
+    var searchValue = $(this).val();
+    $(".table .table-body > div").each(function () {
+      const vehicle_id = $(this).children(":nth-child(1)").text();
+      if (vehicle_id.includes(searchValue)) {
+        $(this).css("display", "grid");
+      } else {
+        $(this).css("display", "none");
+      }
+    });
+  });
+
   loadTable();
 });
 
