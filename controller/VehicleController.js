@@ -1,4 +1,5 @@
-import { getAllVehicles } from "../service/VehicleService.js";
+import { addVehicle, getAllVehicles } from "../service/VehicleService.js";
+import { showAlerts } from "./DashbaordController.js";
 
 $(document).ready(function () {
   $(".add-vehicle-btn").click(function () {
@@ -21,19 +22,16 @@ $(document).ready(function () {
   });
 
   loadTable();
-
 });
 
+function loadTable() {
+  getAllVehicles()
+    .then((result) => {
+      const tableBody = $(".table .table-body");
+      tableBody.empty();
 
-function loadTable (){
-
-    getAllVehicles().then((result) => {
-
-        const tableBody = $(".table .table-body");
-        tableBody.empty();
-
-        result.forEach(element => {
-            tableBody.append(`
+      result.forEach((element) => {
+        tableBody.append(`
                 
                 <div>
             <h5>${dataRefactor(element.vehicleCode, 20)}</h5>
@@ -41,8 +39,10 @@ function loadTable (){
             <h5>${dataRefactor(element.vehicleCategory, 10)}</h5>
             <h5>decel</h5>
             <h5>
-              <div class="active-col ${element.staffId ? "text-success" : "text-danger"}">
-                ${element.staffId ? "Active" : "Inactive"}
+              <div class="active-col ${
+                element.staffId ? "text-success" : "text-danger"
+              }">
+                ${element.staffId ? "Active" : "Disactive"}
               </div>
             </h5>
             <div
@@ -88,11 +88,9 @@ function loadTable (){
           </div>
 
         `);
-        });
-
-    }).catch((error) => {
-
-    });
+      });
+    })
+    .catch((error) => {});
 }
 
 function dataRefactor(data, maxLength) {
@@ -100,4 +98,81 @@ function dataRefactor(data, maxLength) {
     return data.substring(0, maxLength) + " ...";
   }
   return data;
+}
+
+$("#save-vehicle-popup button").click(function () {
+  const licensePlateNumber = $(
+    "#save-vehicle-popup .license-plate-number"
+  ).val();
+  const vehicleCategory = $("#save-vehicle-popup .vehicle-category").val();
+  const fuelType = $("#save-vehicle-popup .fuel-type").val();
+  const remarks = $("#save-vehicle-popup .remarks").val();
+
+  const vehicle = {
+    licensePlateNumber: licensePlateNumber,
+    vehicleCategory: vehicleCategory,
+    fuelType: fuelType,
+    status : "disactive",
+    remarks: remarks,
+  };
+
+  if(!validation(vehicle)){
+    return
+  }
+
+  console.log(vehicle)
+
+  addVehicle(vehicle).then((result) => {
+    console.log(result);
+    showAlerts("Vehicle added successfully", "success");
+    loadTable();
+    clearFields();
+  }).catch((error) => {
+    console.log(error);
+  });
+});
+
+function validation(vehicle){
+  if(!vehicle.licensePlateNumber){
+    showAlerts("License Plate Number is required", "error")
+    return false
+  }
+  if(!vehicle.licensePlateNumber.match(/^[A-Z0-9-]+$/)){
+    showAlerts("License Plate Number format is invalid", "error")
+    return false
+  }
+  if(!vehicle.vehicleCategory){
+    showAlerts("Vehicle Category is required", "error")
+    return false
+  }
+  if (!/^[A-Z]/.test(vehicle.vehicleCategory)) {
+    showAlerts("Vehicle Category format is invalid", "error")
+    return false
+  }
+  if(!vehicle.fuelType){
+    showAlerts("Fuel Type is required", "error")
+    return false
+  }
+  if (!/^[A-Z]/.test(vehicle.fuelType)) {
+    showAlerts("Fuel Type format is invalid", "error")
+    return false
+  }
+  if(!vehicle.remarks){
+    showAlerts("Remarks is required", "error")
+    return false
+  }
+  if(!/^[A-Z]/.test(vehicle.remarks)){
+    showAlerts("Remarks format is invalid", "error")
+    return false
+  }
+  return true
+}
+
+function clearFields(){
+  const licensePlateNumber = $(
+    "#save-vehicle-popup .license-plate-number"
+  ).val("");
+  const vehicleCategory = $("#save-vehicle-popup .vehicle-category").val("");
+  const fuelType = $("#save-vehicle-popup .fuel-type").val("");
+  const remarks = $("#save-vehicle-popup .remarks").val("");
 }
