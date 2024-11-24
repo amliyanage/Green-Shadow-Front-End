@@ -19,8 +19,10 @@ $(document).ready(function () {
   $("#update-vehicle-popup img").click(function () {
     $("#update-vehicle-popup").removeClass("d-flex");
   });
-  $(".table .table-body .action > :nth-child(3)").click(function () {
+  $(".table").on("click", ".action > :nth-child(3)", function () {
+    targetVehicleId = $(this).data("id");
     $("#view-vehicle-popup").addClass("d-flex");
+    setDataToViewForm();
   });
   $("#view-vehicle-popup img").click(function () {
     $("#view-vehicle-popup").removeClass("d-flex");
@@ -77,7 +79,7 @@ function loadTable() {
                   fill="#9A9A9A"
                 />
               </svg>
-              <svg
+              <svg data-id="${element.vehicleCode}"
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
                 height="14"
@@ -234,3 +236,18 @@ $("#update-vehicle-popup button").click(function () {
     console.log(error);
   });
 })
+
+function setDataToViewForm(){
+  getVehicle(targetVehicleId).then((result) => {
+    $("#view-vehicle-popup .vehicle-id-text").val(result.vehicleCode);
+    $("#view-vehicle-popup .license-plate-number-text").val(result.licensePlateNumber);
+    $("#view-vehicle-popup .vehicle-category-text").val(result.vehicleCategory);
+    $("#view-vehicle-popup .fuel-type-text").val(result.fuelType);
+    $("#view-vehicle-popup .remarks-text").val(result.remarks);
+    $("#view-vehicle-popup .status-text").val(result.status);
+    $("#view-vehicle-popup .staff-id-text").val( !result.staffId ? "N/A" : result.staffId );
+    $("#view-vehicle-popup .remark-text").val(result.remarks);
+  }).catch((error) => {
+    console.log(error);
+  });
+}
