@@ -1,5 +1,6 @@
 import { getAllField, getField, saveField } from "../service/FieldService.js";
 import { showAlerts } from "./DashbaordController.js";
+import { getStaffMember } from "../service/StaffService.js";
 
 var Longitude = 0;
 var Latitude = 0;
@@ -28,6 +29,7 @@ $(document).ready(function () {
   $("#card-set").on("click",".field-card .action > :nth-child(3)",function () {
     targetFieldCode = $(this).attr("data-id");
     $("#view-field-popup").addClass("d-flex");
+    loadDataToFieldViewForm();
   })
 
   $("#view-field-popup img").click(function () {
@@ -37,6 +39,7 @@ $(document).ready(function () {
   $("#update-field-popup img").click(function () {
     $("#update-field-popup").removeClass("d-flex");
   });
+
 });
 
 function loadTable() {
@@ -97,7 +100,7 @@ function loadTable() {
                 fill="#9A9A9A"
               />
             </svg>
-            <svg
+            <svg data-id="${element.fieldCode}"
               xmlns="http://www.w3.org/2000/svg"
               width="20"
               height="14"
@@ -290,7 +293,7 @@ function loadDataToUpdateForm(){
     });
 };
 
-function viewLocOnMap (Longitude, Latitude) {
+function viewLocOnMap (Longitude, Latitude,popupType) {
   let map;
   let marker;
   const defaultLocation = { lat: Latitude, lng: Longitude }; 
@@ -299,8 +302,7 @@ function viewLocOnMap (Longitude, Latitude) {
     alert("Map Loaded");
 
     // Initialize the map with jQuery-selected DOM element
-    const mapElement =
-      $("#update-field-popup #map")[0];
+    const mapElement = popupType === "update" ? $("#update-field-popup #map")[0] : $("#view-field-popup #map")[0];
 
     map = new google.maps.Map(mapElement, {
       center: defaultLocation,
@@ -313,24 +315,26 @@ function viewLocOnMap (Longitude, Latitude) {
     });
 
     // Add a click listener to the map
-    google.maps.event.addListener(map, "click", function (event) {
-      const clickedLocation = event.latLng;
+    if(popupType === "update"){
+      google.maps.event.addListener(map, "click", function (event) {
+        const clickedLocation = event.latLng;
 
-      // Remove existing marker, if any
-      if (marker) marker.setMap(null);
+        // Remove existing marker, if any
+        if (marker) marker.setMap(null);
 
-      // Place a new marker
-      marker = new google.maps.Marker({
-        position: clickedLocation,
-        map: map,
+        // Place a new marker
+        marker = new google.maps.Marker({
+          position: clickedLocation,
+          map: map,
+        });
+
+        Longitude = clickedLocation.lng();
+        Latitude = clickedLocation.lat();
+        // alert(
+        //   `Latitude: ${clickedLocation.lat()}, Longitude: ${clickedLocation.lng()}`
+        // );
       });
-
-      Longitude = clickedLocation.lng();
-      Latitude = clickedLocation.lat();
-      // alert(
-      //   `Latitude: ${clickedLocation.lat()}, Longitude: ${clickedLocation.lng()}`
-      // );
-    });
+    }
   }
 
   initMap();
@@ -347,3 +351,60 @@ function convertBase64ToFileInput(base64){
   dataTransfer.items.add(new File([file], "image.jpg"));
   return dataTransfer.files;
 }
+
+function loadDataToFieldViewForm() {
+  getField(targetFieldCode)
+    .then((result) => {
+      $("#view-field-popup .fieldCode-text").val(result.fieldCode);
+      $("#view-field-popup .fieldName-text").val(result.fieldName);
+      $("#view-field-popup .fieldSize-text").val(result.fieldSize);
+      $("#view-field-popup .image-1").attr(
+        "src",
+        base64ToImageURL(result.image1)
+      );
+      $("#view-field-popup .image-2").attr(
+        "src",
+        base64ToImageURL(result.image2)
+      );
+
+      if (
+        result.fieldLocation &&
+        result.fieldLocation.x &&
+        result.fieldLocation.y
+      ) {
+        viewLocOnMap(result.fieldLocation.x, result.fieldLocation.y, "view");
+      } else {
+        console.log("Invalid field location data.");
+      }
+
+      // Clear tableBody before appending new content
+      $("#view-field-popup .tableBody").empty();
+
+      console.log("staff", result.staffId);
+      $.each(result.staffId, function (index, staffId) {
+        // Append placeholder
+        $("#view-field-popup .tableBody").append(`
+                <div class="d-grid">
+                    <div>${staffId}</div>
+                    <div class="border-start border-black" id="staff-${staffId}">Loading...</div>
+                </div>
+            `);
+
+        // Fetch and update staff data dynamically
+        getStaffMember(staffId)
+          .then((staffResult) => {
+            $(`#staff-${staffId}`).text(staffResult.firstName);
+          })
+          .catch((error) => {
+            console.log(error);
+            $(`#staff-${staffId}`).text("Error loading data");
+          });
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      alert("Failed to load field data. Please try again.");
+    });
+}
+
+

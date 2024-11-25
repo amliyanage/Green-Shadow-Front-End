@@ -119,7 +119,7 @@ input + button {
 }
 
 #view-field-popup #map{
-  height: 200px;
+  height: 250px;
   width: 100%;
 }
 
@@ -153,6 +153,8 @@ input + button {
 #view-field-popup .form-set img{
   width: 100%;
   height: 300px;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* #view-field-popup .table .tableBody > div > div{
