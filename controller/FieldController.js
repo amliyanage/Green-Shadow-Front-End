@@ -25,6 +25,15 @@ $(document).ready(function () {
     }
   );
 
+  $("#card-set").on("click",".field-card .action > :nth-child(3)",function () {
+    targetFieldCode = $(this).attr("data-id");
+    $("#view-field-popup").addClass("d-flex");
+  })
+
+  $("#view-field-popup img").click(function () {
+    $("#view-field-popup").removeClass("d-flex");
+  });
+
   $("#update-field-popup img").click(function () {
     $("#update-field-popup").removeClass("d-flex");
   });

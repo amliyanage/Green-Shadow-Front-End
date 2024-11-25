@@ -71,10 +71,7 @@
       </div>
     </div>
 
-    <!-- save field popup end -->
-
-    <!-- update staff popup start -->
-
+    <!-- update field popup end -->
     <div
       id="update-field-popup"
       class="position-absolute start-0 end-0 top-0 bottom-0 w-100 h-auto justify-content-center align-items-center"
@@ -126,6 +123,69 @@
     </div>
 
     <!-- update field popup end -->
+
+    <!-- view field popup start -->
+
+    <div
+      id="view-field-popup"
+      class="position-absolute start-0 end-0 top-0 bottom-0 w-100 h-auto justify-content-center align-items-center d-flex"
+    >
+      <div class="w-75 h-auto p-4">
+        <img class="float-end" src="/assets/icon/close-btn.svg" />
+        <h2 class="mt-3 mb-3">View Field</h2>
+        <div class="first-sec">
+          <div class="form-floating mb-3">
+              <input
+                type="email"
+                class="form-control fieldSize-text"
+                id="floatingInput"
+                placeholder="name@example.com"
+                readonly
+              />
+              <label for="floatingInput">Field Code</label>
+          </div>
+          <div class="form-floating mb-3">
+              <input
+                type="email"
+                class="form-control fieldSize-text"
+                id="floatingInput"
+                placeholder="name@example.com"
+                readonly
+              />
+              <label for="floatingInput">Field Name</label>
+          </div>
+          <div class="form-floating mb-3">
+              <input
+                type="email"
+                class="form-control fieldSize-text"
+                id="floatingInput"
+                placeholder="name@example.com"
+                readonly
+              />
+              <label for="floatingInput">Field Size</label>
+            </div>
+        </div>
+        <div class="form-set">
+          <img src="" alt="">
+          <img src="" alt="">
+        </div>
+        <div id="map">
+
+        </div>
+        <div class="table w-100 border border-black">
+            <div class="table-head w-100 d-grid border-bottom border-black">
+              <div>Staff Id</div>
+              <div class="border-start border-black">Staff Name</div>
+            </div>
+            <div class="tableBody w-100 border-bottom border-black">
+              <div class="d-grid">
+                <div>1</div>
+                <div class="border-start border-black">John Doe</div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
 
 
     <h1>Field Management</h1>
