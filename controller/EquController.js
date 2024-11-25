@@ -22,8 +22,10 @@ $(document).ready(function() {
         $('#update-equ-popup').removeClass('d-flex');
     })
 
-    $('.table .table-body .action > :nth-child(3)').click(function(){
+    $(".table").on("click", ".action > :nth-child(3)", function () {
         $('#view-equ-popup').addClass('d-flex');
+        targetId = $(this).data('id');
+        loadDataToViewEqu();
     })
     $('#view-equ-popup img').click(function(){
         $('#view-equ-popup').removeClass('d-flex');
@@ -65,7 +67,7 @@ function loadTable(){
                   fill="#9A9A9A"
                 />
               </svg>
-              <svg
+              <svg data-id="${equ.equipmentId}"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="19"
@@ -77,7 +79,7 @@ function loadTable(){
                   fill="#9A9A9A"
                 />
               </svg>
-              <svg
+              <svg data-id="${equ.equipmentId}"
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
                 height="14"
@@ -245,4 +247,17 @@ $('#update-equ-popup button').click(function(){
             console.log(error);
         });
 })
+
+function loadDataToViewEqu(){
+
+    getEqu(targetId).then((result) => {
+        $('#view-equ-popup .equ-name-text').val(result.equipmentName);
+        $('#view-equ-popup .equ-type-text').val(result.equipmentType);
+        $('#view-equ-popup .staff-text').val(result.staffId === null ? "N/A" : result.staffId);
+        $('#view-equ-popup .field-text').val(result.fieldCode === null ? "N/A" : result.fieldCode);
+    }).catch((error) => {
+        console.log(error);
+    })
+
+}
 
