@@ -1,5 +1,9 @@
-import {getAllEqu, saveEqu} from "../service/EquService.js";
+import {getAllEqu, getEqu, saveEqu, updateEqu} from "../service/EquService.js";
 import {showAlerts} from "./DashbaordController.js";
+import {getAllStaff} from "../service/StaffService.js";
+import {getAllField} from "../service/FieldService.js";
+
+var targetId = null;
 
 $(document).ready(function() {
     $('.add-equ-btn').click(function(){
@@ -9,8 +13,10 @@ $(document).ready(function() {
         $('#save-equ-popup').removeClass('d-flex');
     })
 
-    $('.table .table-body .action > :nth-child(1)').click(function(){
+    $(".table").on("click", ".action > :nth-child(1)", function () {
         $('#update-equ-popup').addClass('d-flex');
+        targetId = $(this).data('id');
+        loadDataToUpdate()
     })
     $('#update-equ-popup img').click(function(){
         $('#update-equ-popup').removeClass('d-flex');
@@ -37,8 +43,8 @@ function loadTable(){
                 `
              <div>
             <h5>${dataRefactor(equ.equipmentId,20)}</h5>
-            <h5>${equ.equipmentName}</h5>
-            <h5>${equ.equipmentType}</h5>
+            <h5>${dataRefactor(equ.equipmentName,14)}</h5>
+            <h5>${dataRefactor(equ.equipmentType,14)}</h5>
             <h5>
               <div class=" ${ equ.status === "Available" ? "text-success" : "text-danger" } ">
                 ${equ.status}
@@ -47,7 +53,7 @@ function loadTable(){
             <div
               class="action d-flex justify-content-center gap-4 align-items-center"
             >
-              <svg
+              <svg data-id="${equ.equipmentId}"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="22"
@@ -150,3 +156,93 @@ function validateEquipment(equipmentName, equipmentType) {
 
     return errors;
 }
+function loadDataToUpdate() {
+    // Fetch equipment details by targetId
+    getEqu(targetId)
+        .then((result) => {
+            // Update equipment details in the popup
+            $('#update-equ-popup .equ-name-text').val(result.equipmentName);
+            $('#update-equ-popup .equ-type-text').val(result.equipmentType);
+
+            // Update the staff combo
+            const staffCombo = $('#update-equ-popup .staff-combo');
+            staffCombo.empty(); // Clear existing options
+            const selectedStaffId = result.staffId === null ? "" : result.staffId;
+
+            staffCombo.append(
+                `<option value="N/A" ${
+                    selectedStaffId === "" ? "selected" : ""
+                }>No one</option>`
+            );
+
+            getAllStaff()
+                .then((staffList) => {
+                    // Populate staff options
+                    $.each(staffList, function (index, staff) {
+                        staffCombo.append(
+                            `<option value="${staff.id}" ${
+                                staff.id === selectedStaffId ? "selected" : ""
+                            }>${staff.id} , ${staff.firstName}</option>`
+                        );
+                    });
+                })
+                .catch((error) => {
+                    console.log("Error fetching staff:", error);
+                });
+
+            // Update the field combo
+            const fieldCombo = $('#update-equ-popup .field-combo');
+            fieldCombo.empty(); // Clear existing options
+            const selectedFieldCode = result.fieldId === null ? "" : result.fieldCode;
+
+            fieldCombo.append(
+                `<option value="N/A" ${
+                    selectedFieldCode === "" ? "selected" : ""
+                }>No one</option>`
+            );
+
+            getAllField()
+                .then((fieldList) => {
+                    $.each(fieldList, function (index, field) {
+                        fieldCombo.append(
+                            `<option value="${field.fieldCode}" ${
+                                field.fieldCode === selectedFieldCode ? "selected" : "No one"
+                            }>${field.fieldCode} , ${field.fieldName}</option>`
+                        );
+                    });
+                })
+                .catch((error) => {
+                    console.log("Error fetching fields:", error);
+                });
+        })
+        .catch((error) => {
+            console.log("Error fetching equipment details:", error);
+        });
+}
+
+$('#update-equ-popup button').click(function(){
+    const equName = $('#update-equ-popup .equ-name-text').val();
+    const equType = $('#update-equ-popup .equ-type-text').val();
+    const staffId = $('#update-equ-popup .staff-combo').val();
+    const fieldCode = $('#update-equ-popup .field-combo').val();
+
+    const equ = {
+        equipmentName: equName,
+        equipmentType: equType,
+        status: staffId === "N/A" && fieldCode === "N/A" ? "Not Available" : "Available",
+    }
+
+    if (!validateEquipment(equName, equType)){
+        return
+    }
+
+    updateEqu(equ, staffId, fieldCode ,targetId)
+        .then((result) => {
+            loadTable();
+            showAlerts("Equipment updated successfully", "success");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+})
+
