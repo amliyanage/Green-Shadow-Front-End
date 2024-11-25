@@ -1,4 +1,4 @@
-import {getAllEqu, getEqu, saveEqu, updateEqu} from "../service/EquService.js";
+import {deleteEqu, getAllEqu, getEqu, saveEqu, updateEqu} from "../service/EquService.js";
 import {showAlerts} from "./DashbaordController.js";
 import {getAllStaff} from "../service/StaffService.js";
 import {getAllField} from "../service/FieldService.js";
@@ -30,6 +30,11 @@ $(document).ready(function() {
     $('#view-equ-popup img').click(function(){
         $('#view-equ-popup').removeClass('d-flex');
     })
+
+    $(".table").on("click", ".action > :nth-child(2)", function () {
+        targetId = $(this).data("id");
+        deleteEquFrom();
+    });
 
     loadTable()
 });
@@ -258,6 +263,34 @@ function loadDataToViewEqu(){
     }).catch((error) => {
         console.log(error);
     })
+
+}
+
+function deleteEquFrom(){
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to delete this Equipment?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "Cancel",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteEqu(targetId)
+                .then((result) => {
+                    loadTable();
+                    Swal.fire("Deleted!", "Equipment has been deleted.", "success");
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire("Cancelled", "Your item is safe.", "info");
+        }
+    });
 
 }
 
