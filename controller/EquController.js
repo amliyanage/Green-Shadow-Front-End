@@ -1,4 +1,5 @@
-import {getAllEqu} from "../service/EquService.js";
+import {getAllEqu, saveEqu} from "../service/EquService.js";
+import {showAlerts} from "./DashbaordController.js";
 
 $(document).ready(function() {
     $('.add-equ-btn').click(function(){
@@ -31,12 +32,12 @@ function loadTable(){
 
     getAllEqu().then((result) => {
         $.each(result, function(index, equ){
-
+            console.log(equ);
             table.append(
                 `
              <div>
-            <h5>${equ.equipmentId}</h5>
-            <h5>${equ.name}</h5>
+            <h5>${dataRefactor(equ.equipmentId,20)}</h5>
+            <h5>${equ.equipmentName}</h5>
             <h5>${equ.equipmentType}</h5>
             <h5>
               <div class=" ${ equ.status === "Available" ? "text-success" : "text-danger" } ">
@@ -86,9 +87,66 @@ function loadTable(){
           </div>
                 
                 `
-
             );
 
         })
     })
+}
+
+function dataRefactor(data, maxLength) {
+    if (data && typeof data === "string" && data.length > maxLength) {
+        return data.substring(0, maxLength) + " ...";
+    }
+    return data;
+}
+
+$('#save-equ-popup button').click(function(){
+    const equName = $('#save-equ-popup .equ-name-text').val();
+    const equType = $('#save-equ-popup .equ-type-text').val();
+
+    const equ = {
+        equipmentName: equName,
+        equipmentType: equType,
+        status: "Not Available"
+    }
+
+    if (!validateEquipment(equName, equType)){
+        return
+    }
+
+    saveEqu(equ).then((result) => {
+        loadTable();
+        showAlerts("Equipment saved successfully", "success");
+    }).catch((error) => {
+        console.log(error);
+    })
+})
+
+function validateEquipment(equipmentName, equipmentType) {
+    const errors = [];
+    const alphaNumericRegex = /^[a-zA-Z0-9]+$/;
+
+    if (!equipmentName || equipmentName.trim() === "") {
+        showAlerts("Equipment name is required.", "error");
+        return false;
+    } else if (!alphaNumericRegex.test(equipmentName)) {
+        showAlerts("Equipment name can only contain letters and numbers.", "error");
+        return false;
+    } else if (equipmentName[0] !== equipmentName[0].toUpperCase()) {
+        showAlerts("The first letter of the equipment name must be capitalized.", "error");
+        return false;
+    }
+
+    if (!equipmentType || equipmentType.trim() === "") {
+        showAlerts("Equipment type is required.", "error");
+        return false;
+    } else if (!alphaNumericRegex.test(equipmentType)) {
+        showAlerts("Equipment type can only contain letters and numbers.", "error");
+        return false;
+    } else if (equipmentType[0] !== equipmentType[0].toUpperCase()) {
+        showAlerts("The first letter of the equipment type must be capitalized.", "error");
+        return false;
+    }
+
+    return errors;
 }

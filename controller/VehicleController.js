@@ -64,9 +64,9 @@ function loadTable() {
             <h5>${dataRefactor(element.fuelType, 10)}</h5>
             <h5>
               <div class="active-col ${
-                element.staff ? "text-success" : "text-danger"
+                element.staff ? "text-danger" : "text-success"
               }">
-                ${element.staff ? "Available" : "Not Available"}
+                ${element.staff ? "Not Available" : "Available"}
               </div>
             </h5>
             <div
