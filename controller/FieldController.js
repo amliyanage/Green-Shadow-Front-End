@@ -45,6 +45,13 @@ $(document).ready(function () {
     deleteFieldData()
   })
 
+  $('.search-bar').on('keyup', function () {
+    const value = $(this).val().toLowerCase();
+    $("#card-set .field-card").filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  })
+
 });
 
 function loadTable() {
