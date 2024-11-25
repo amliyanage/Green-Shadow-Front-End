@@ -67,7 +67,7 @@ input + button {
 }
 
 #save-field-popup,
-#update-staff-popup,
+#update-field-popup,
 #view-staff-popup {
   display: none;
   animation: wipe 0.2s ease-in-out;
@@ -85,7 +85,7 @@ input + button {
 }
 
 #save-field-popup > div,
-#update-staff-popup > div,
+#update-field-popup > div,
 #view-staff-popup > div {
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.956);
@@ -94,7 +94,7 @@ input + button {
 }
 
 #save-field-popup h2,
-#update-staff-popup h2,
+#update-field-popup h2,
 #view-staff-popup h2 {
   font-size: 1.4vw;
   font-weight: 500;
@@ -102,17 +102,17 @@ input + button {
   color: #009444;
 }
 
-#save-field-popup .form-set {
+#save-field-popup .form-set , #update-field-popup .form-set {
   grid-template-columns: repeat(2, 1fr);
   column-gap: 20px;
 }
 
-#save-field-popup #map {
+#save-field-popup #map , #update-field-popup #map {
   height: 500px;
   width: 100%;
 }
 
-#mapModal {
+/* #mapModal {
   display: none;
   position: fixed;
   top: 0;
@@ -134,7 +134,7 @@ input + button {
 #map {
   width: 100%;
   height: 100%;
-}
+} */
 #closeModal {
   position: absolute;
   top: 10px;

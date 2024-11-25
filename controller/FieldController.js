@@ -1,20 +1,33 @@
-import { getAllField, saveField } from "../service/FieldService.js";
+import { getAllField, getField, saveField } from "../service/FieldService.js";
 import { showAlerts } from "./DashbaordController.js";
 
 var Longitude = 0;
 var Latitude = 0;
 
+var targetFieldCode = null;
+
 $(document).ready(function () {
   loadTable();
-  loadMap();
 
   $(".add-field-btn").click(function () {
     $("#save-field-popup").addClass("d-flex");
+    loadMap();
   });
   $("#save-field-popup img").click(function () {
     $("#save-field-popup").removeClass("d-flex");
   });
 
+  $("#card-set").on("click",".field-card .action > :nth-child(1)",function () {
+      $("#update-field-popup").addClass("d-flex");
+      targetFieldCode = $(this).attr("data-id");
+      loadDataToUpdateForm();
+      loadMap();
+    }
+  );
+
+  $("#update-field-popup img").click(function () {
+    $("#update-field-popup").removeClass("d-flex");
+  });
 });
 
 function loadTable() {
@@ -50,8 +63,8 @@ function loadTable() {
             <h3>Field Name</h3>
             <h2>${dataRefactor(element.fieldName, 15)}</h2>
           </div>
-          <div class="d-flex align-items-center gap-3">
-            <svg
+          <div class="d-flex align-items-center gap-3 action">
+            <svg data-id="${element.fieldCode}"
               xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="22"
@@ -113,7 +126,11 @@ function loadMap() {
   const defaultLocation = { lat: 6.0367, lng: 80.217 }; // Galle
 
   function initMap() {
-    map = new google.maps.Map(document.getElementById("map"), {
+    alert("Map Loaded");
+
+    const mapElement = $("#save-field-popup #map")[0];
+
+    map = new google.maps.Map(mapElement, {
       center: defaultLocation,
       zoom: 13,
     });
@@ -123,15 +140,19 @@ function loadMap() {
       map: map,
     });
 
-    map.addListener("click", (event) => {
+    // Add a click listener to the map
+    google.maps.event.addListener(map, "click", function (event) {
       const clickedLocation = event.latLng;
 
+      // Remove existing marker, if any
       if (marker) marker.setMap(null);
 
+      // Place a new marker
       marker = new google.maps.Marker({
         position: clickedLocation,
         map: map,
       });
+
       Longitude = clickedLocation.lng();
       Latitude = clickedLocation.lat();
       // alert(
@@ -142,6 +163,7 @@ function loadMap() {
 
   initMap();
 }
+
 
 $("#save-field-popup button").click(function () {
   const fieldName = $("#save-field-popup .fieldName-text").val();
@@ -174,9 +196,7 @@ $("#save-field-popup button").click(function () {
     });
 });
 
-
 function validateForm(fieldName, fieldSize, image1, image2) {
-
   if (!fieldName) {
     showAlerts("Field Name is required", "error");
     return false;
@@ -194,18 +214,24 @@ function validateForm(fieldName, fieldSize, image1, image2) {
   if (!image1.files || image1.files.length === 0) {
     showAlerts("Image 1 is required", "error");
     return false;
-  } 
+  }
   if (!isValidImage(image1.files[0])) {
-    showAlerts("Image 1 must be a valid image file (JPG, PNG, or GIF)", "error");
+    showAlerts(
+      "Image 1 must be a valid image file (JPG, PNG, or GIF)",
+      "error"
+    );
     return false;
   }
 
   if (!image2.files || image2.files.length === 0) {
     showAlerts("Image 2 is required", "error");
     return false;
-  } 
+  }
   if (!isValidImage(image2.files[0])) {
-    showAlerts("Image 2 must be a valid image file (JPG, PNG, or GIF)", "error");
+    showAlerts(
+      "Image 2 must be a valid image file (JPG, PNG, or GIF)",
+      "error"
+    );
     return false;
   }
 
@@ -215,4 +241,100 @@ function validateForm(fieldName, fieldSize, image1, image2) {
 function isValidImage(file) {
   const allowedExtensions = ["image/jpeg", "image/png", "image/gif"];
   return allowedExtensions.includes(file.type);
+}
+
+$("#update-field-popup button").click(function () {
+  const fieldName = $("#update-field-popup .fieldName-text").val();
+  const fieldSize = $("#update-field-popup .fieldSize-text").val();
+  const image1 = $("#update-field-popup .image-1")[0];
+  const image2 = $("#update-field-popup .image-2")[0];
+
+  console.log(fieldName, fieldSize, image1.files[0], image2.files[0]);
+  console.log(Longitude, Latitude);
+  const formData = new FormData();
+  formData.append("fieldName", fieldName);
+  formData.append("fieldSize", fieldSize);
+  formData.append("image1", image1.files[0]);
+  formData.append("image2", image2.files[0]);
+  formData.append("fieldLocationX", Longitude);
+  formData.append("fieldLocationY", Latitude);
+  console.log(formData);
+
+  if (!validateForm(fieldName, fieldSize, image1, image2)) {
+    return;
+  }
+
+  
+});
+
+function loadDataToUpdateForm(){
+  console.log(targetFieldCode);
+  getField(targetFieldCode).then((result) => {
+    console.log(result)
+    $("#update-field-popup .fieldName-text").val(result.fieldName);
+    $("#update-field-popup .fieldSize-text").val(result.fieldSize);
+    Longitude = result.fieldLocation.x;
+    Latitude = result.fieldLocation.y;
+    viewLocOnMap(Longitude, Latitude);
+    }).catch((error) => {
+      console.log(error);
+    });
+};
+
+function viewLocOnMap (Longitude, Latitude) {
+  let map;
+  let marker;
+  const defaultLocation = { lat: Latitude, lng: Longitude }; 
+
+  function initMap() {
+    alert("Map Loaded");
+
+    // Initialize the map with jQuery-selected DOM element
+    const mapElement =
+      $("#update-field-popup #map")[0];
+
+    map = new google.maps.Map(mapElement, {
+      center: defaultLocation,
+      zoom: 13,
+    });
+
+    marker = new google.maps.Marker({
+      position: defaultLocation,
+      map: map,
+    });
+
+    // Add a click listener to the map
+    google.maps.event.addListener(map, "click", function (event) {
+      const clickedLocation = event.latLng;
+
+      // Remove existing marker, if any
+      if (marker) marker.setMap(null);
+
+      // Place a new marker
+      marker = new google.maps.Marker({
+        position: clickedLocation,
+        map: map,
+      });
+
+      Longitude = clickedLocation.lng();
+      Latitude = clickedLocation.lat();
+      // alert(
+      //   `Latitude: ${clickedLocation.lat()}, Longitude: ${clickedLocation.lng()}`
+      // );
+    });
+  }
+
+  initMap();
+}
+
+function convertBase64ToFileInput(base64){
+  const byteArray = [];
+  for (let i = 0; i < base64.length; i++) {
+    byteArray.push(byteArray.charCodeAt(i));
+  }
+  
+  const file = new Blob([new Uint8Array(byteArray)], { type: "image/jpeg" });
+  const dataTransfer = new DataTransfer();
+  dataTransfer.items.add(new File([file], "image.jpg"));
+  return dataTransfer.files;
 }

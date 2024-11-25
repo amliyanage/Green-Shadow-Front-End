@@ -1,7 +1,7 @@
 import { addStaff, deleteStaff, getAllStaff, getStaffMember, updateStaff } from "../service/StaffService.js";
 import { showAlerts } from "./DashbaordController.js";
 
-var tragetStaffId = null;
+var targetStaffId = null;
 
 $(document).ready(function () {
 
@@ -17,8 +17,8 @@ $(document).ready(function () {
   $(".table").on("click", ".action > :nth-child(1)", function () {
     $("#update-staff-popup").addClass("d-flex");
     const staffId = $(this).data("id");
-    loadDataToUbdateForm(staffId);
-    tragetStaffId = staffId;
+    loadDataToUpdateForm(staffId);
+    targetStaffId = staffId;
   });
 
   $("#update-staff-popup img").click(function () {
@@ -28,7 +28,7 @@ $(document).ready(function () {
   $(".table").on("click", ".action > :nth-child(3)", function () {
     $("#view-staff-popup").addClass("d-flex");
     const staffId = $(this).data("id");
-    tragetStaffId = staffId;
+    targetStaffId = staffId;
     loadDataToViewForm();
   });
   $("#view-staff-popup img").click(function () {
@@ -36,7 +36,7 @@ $(document).ready(function () {
   });
 
   $(".table").on("click", ".action > :nth-child(2)", function () {
-    tragetStaffId = $(this).data("id");
+    targetStaffId = $(this).data("id");
     deleteStaffMember();
   });
 
@@ -208,7 +208,7 @@ function validateStaffForm(staff) {
     return false;
   }
   if (!/^[A-Z]/.test(staff.lastName.trim())) {
-    showAlerts("Laste name must start with a capital letter.", "error");
+    showAlerts("Last name must start with a capital letter.", "error");
     return false;
   }
   if (!staff.designation || staff.designation.trim() === "") {
@@ -267,7 +267,7 @@ function validateStaffForm(staff) {
   return true; 
 }
 
-function loadDataToUbdateForm(staffId) {
+function loadDataToUpdateForm(staffId) {
     getStaffMember(staffId).then((result) =>{
         $("#update-staff-popup .first-name-text").val(result.firstName);
         $("#update-staff-popup .last-name-text").val(result.lastName);
@@ -331,39 +331,45 @@ $("#update-staff-popup button").click(function(){
     return;
   }
   console.log(staff)
-  updateStaff(tragetStaffId, staff).then((result) =>{
-    showAlerts("Staff updated successfully", "success");
-    loadTable();
-  }).catch((error) =>{
-    console.log(error)
-  })
+  updateStaff(targetStaffId, staff)
+    .then((result) => {
+      showAlerts("Staff updated successfully", "success");
+      loadTable();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   
 });
 
 function loadDataToViewForm () {
-  alert(tragetStaffId);
-  getStaffMember(tragetStaffId).then((result) =>{
-    $("#view-staff-popup .staff-id-text").val(result.id);
-    $("#view-staff-popup .first-name-text").val(result.firstName);
-    $("#view-staff-popup .last-name-text").val(result.lastName);
-    $("#view-staff-popup .destination-text").val(result.designation);
-    $('#view-staff-popup .join-date-text').val(result.joinedDate.split(" ")[0]);
-    $('#view-staff-popup .dob-text').val(result.DOB.split(" ")[0]);
-    $('#view-staff-popup .gender-combo').val(result.gender);
-    $("#view-staff-popup .address-text").val(
-      `${result.addressLine1} , ${result.addressLine2} ${
-        result.addressLine3 !== "none" ? " , " + result.addressLine3 : ""
-      } ${
-        result.addressLine4 !== "none" ? " , " + result.addressLine4 : ""
-      } ${result.addressLine5 !== "none" ? " , " + result.addressLine5 : ""}`
-    );
+  alert(targetStaffId);
+  getStaffMember(targetStaffId)
+    .then((result) => {
+      $("#view-staff-popup .staff-id-text").val(result.id);
+      $("#view-staff-popup .first-name-text").val(result.firstName);
+      $("#view-staff-popup .last-name-text").val(result.lastName);
+      $("#view-staff-popup .destination-text").val(result.designation);
+      $("#view-staff-popup .join-date-text").val(
+        result.joinedDate.split(" ")[0]
+      );
+      $("#view-staff-popup .dob-text").val(result.DOB.split(" ")[0]);
+      $("#view-staff-popup .gender-combo").val(result.gender);
+      $("#view-staff-popup .address-text").val(
+        `${result.addressLine1} , ${result.addressLine2} ${
+          result.addressLine3 !== "none" ? " , " + result.addressLine3 : ""
+        } ${
+          result.addressLine4 !== "none" ? " , " + result.addressLine4 : ""
+        } ${result.addressLine5 !== "none" ? " , " + result.addressLine5 : ""}`
+      );
 
-    $('#view-staff-popup .contact-text').val(result.contactNo);
-    $('#view-staff-popup .email-text').val(result.email);
-    $('#view-staff-popup .role-combo').val(result.role);
-  }).catch((error) =>{
-    console.log(error);
-  });
+      $("#view-staff-popup .contact-text").val(result.contactNo);
+      $("#view-staff-popup .email-text").val(result.email);
+      $("#view-staff-popup .role-combo").val(result.role);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 function deleteStaffMember(){
@@ -378,12 +384,14 @@ function deleteStaffMember(){
     cancelButtonText: "Cancel",
   }).then((result) => {
     if (result.isConfirmed) {
-      deleteStaff(tragetStaffId).then((result) =>{
-        loadTable();
-        Swal.fire("Deleted!", "staff member has been deleted.", "success");
-      }).catch((error) =>{
-        console.log(error);
-      });
+      deleteStaff(targetStaffId)
+        .then((result) => {
+          loadTable();
+          Swal.fire("Deleted!", "staff member has been deleted.", "success");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else if (result.dismiss === Swal.DismissReason.cancel) {
       Swal.fire("Cancelled", "Your item is safe.", "info");
     }
