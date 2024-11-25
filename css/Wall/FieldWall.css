@@ -58,6 +58,10 @@ input + button {
   height: 25vh;
 }
 
+.field-card:hover > :first-child img{
+  transform: scale(1.5);
+}
+
 .field-card > :first-child img{
   object-fit: cover;
 }

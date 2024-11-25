@@ -149,11 +149,6 @@ $("#save-field-popup button").click(function () {
   const image1 = $("#save-field-popup .image-1")[0];
   const image2 = $("#save-field-popup .image-2")[0];
 
-  // Check if files are selected before appending them to FormData
-  if (image1.files.length === 0 || image2.files.length === 0) {
-    console.log("Please select both images.");
-    return; // Exit if no file is selected
-  }
   console.log(fieldName, fieldSize, image1.files[0], image2.files[0]);
   console.log(Longitude, Latitude);
   const formData = new FormData();
@@ -165,6 +160,10 @@ $("#save-field-popup button").click(function () {
   formData.append("fieldLocationY", Latitude);
   console.log(formData);
 
+  if (!validateForm(fieldName, fieldSize, image1, image2)) {
+    return;
+  }
+
   saveField(formData)
     .then((result) => {
       loadTable();
@@ -174,3 +173,46 @@ $("#save-field-popup button").click(function () {
       console.log(error);
     });
 });
+
+
+function validateForm(fieldName, fieldSize, image1, image2) {
+
+  if (!fieldName) {
+    showAlerts("Field Name is required", "error");
+    return false;
+  }
+
+  if (!fieldSize) {
+    showAlerts("Field Size is required", "error");
+    return false;
+  }
+  if (isNaN(fieldSize) || fieldSize <= 0) {
+    showAlerts("Field Size must be a positive number", "error");
+    return false;
+  }
+
+  if (!image1.files || image1.files.length === 0) {
+    showAlerts("Image 1 is required", "error");
+    return false;
+  } 
+  if (!isValidImage(image1.files[0])) {
+    showAlerts("Image 1 must be a valid image file (JPG, PNG, or GIF)", "error");
+    return false;
+  }
+
+  if (!image2.files || image2.files.length === 0) {
+    showAlerts("Image 2 is required", "error");
+    return false;
+  } 
+  if (!isValidImage(image2.files[0])) {
+    showAlerts("Image 2 must be a valid image file (JPG, PNG, or GIF)", "error");
+    return false;
+  }
+
+  return true;
+}
+
+function isValidImage(file) {
+  const allowedExtensions = ["image/jpeg", "image/png", "image/gif"];
+  return allowedExtensions.includes(file.type);
+}
