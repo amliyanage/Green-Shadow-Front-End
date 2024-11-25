@@ -59,3 +59,22 @@ export function getField(field_code){
         })
     })
 }
+
+export function deleteField(field_code){
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: `http://localhost:5055/greenshadow/api/v1/field/${field_code}`,
+            type: "DELETE",
+            contentType: "application/json",
+            headers: {
+                Authorization: "Bearer " + getCookie("authToken"),
+            },
+            success: function (result) {
+                resolve(result);
+            },
+            error: function (xhr, status, error) {
+                reject(error);
+            },
+        })
+    })
+}

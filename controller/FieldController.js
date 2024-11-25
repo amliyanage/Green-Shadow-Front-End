@@ -1,4 +1,4 @@
-import { getAllField, getField, saveField } from "../service/FieldService.js";
+import { getAllField, getField, saveField ,deleteField } from "../service/FieldService.js";
 import { showAlerts } from "./DashbaordController.js";
 import { getStaffMember } from "../service/StaffService.js";
 
@@ -39,6 +39,11 @@ $(document).ready(function () {
   $("#update-field-popup img").click(function () {
     $("#update-field-popup").removeClass("d-flex");
   });
+
+  $("#card-set").on("click",".field-card .action > :nth-child(2)",function () {
+    targetFieldCode = $(this).attr("data-id");
+    deleteFieldData()
+  })
 
 });
 
@@ -88,7 +93,7 @@ function loadTable() {
                 fill="#9A9A9A"
               />
             </svg>
-            <svg
+            <svg data-id="${element.fieldCode}"
               xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="19"
@@ -405,6 +410,34 @@ function loadDataToFieldViewForm() {
       console.log(error);
       alert("Failed to load field data. Please try again.");
     });
+}
+
+function deleteFieldData(){
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to delete this Field?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      deleteField(targetFieldCode)
+          .then((result) => {
+            loadTable();
+            Swal.fire("Deleted!", "Field has been deleted.", "success");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire("Cancelled", "Your item is safe.", "info");
+    }
+  });
+
 }
 
 
