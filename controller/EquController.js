@@ -36,6 +36,21 @@ $(document).ready(function() {
         deleteEquFrom();
     });
 
+    $(".search-bar").on("keyup", function () {
+
+        var searchValue = $(this).val();
+        $(".table .table-body > div").each(function () {
+            const equId = $(this).children(":nth-child(1)").text();
+            if (equId.includes(searchValue)) {
+                $(this).css("display", "grid");
+            }
+            else {
+                $(this).css("display", "none");
+            }
+        });
+
+    });
+
     loadTable()
 });
 
