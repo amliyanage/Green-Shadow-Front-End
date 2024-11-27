@@ -138,6 +138,10 @@ $('#save-crop-popup button').click(function () {
 
     console.log(image.files[0]);
 
+    if (!validateCrop(cropName, cropScientificName, cropSeason, cropType, image)) {
+        return;
+    }
+
     saveCrop(formData, fieldCode)
         .then((result) => {
             $('#save-crop-popup').removeClass('d-flex');
@@ -158,4 +162,35 @@ function loadDataToSavePopup(){
             )
         })
     })
+}
+
+function validateCrop(cropName, cropScientificName, cropSeason, cropType, image) {
+    const alphaRegex = /^[a-zA-Z\s]+$/;
+    const alphaNumericRegex = /^[a-zA-Z0-9\s]+$/;
+
+    function validateField(field, fieldName, regex) {
+        if (!field || field.trim() === "") {
+            showAlerts(`${fieldName} is required.`, "error");
+            return false;
+        } else if (!regex.test(field)) {
+            showAlerts(`${fieldName} must be valid.`, "error");
+            return false;
+        } else if (field[0] !== field[0].toUpperCase()) {
+            showAlerts(`${fieldName} must start with a capital letter.`, "error");
+            return false;
+        }
+        return true;
+    }
+
+    if (!validateField(cropName, "Crop name", alphaRegex)) return false;
+    if (!validateField(cropScientificName, "Crop scientific name", alphaNumericRegex)) return false;
+    if (!validateField(cropSeason, "Crop season", alphaRegex)) return false;
+    if (!validateField(cropType, "Crop type", alphaRegex)) return false;
+
+    if (!image || image.files.length === 0) {
+        showAlerts("Crop image is required.", "error");
+        return false;
+    }
+
+    return true;
 }
