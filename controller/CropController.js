@@ -1,6 +1,8 @@
-import {getAllCrops, saveCrop} from "../service/CropService.js";
+import {getAllCrops, getCrop, saveCrop, updateCrop} from "../service/CropService.js";
 import {showAlerts} from "./DashbaordController.js";
 import {getAllField} from "../service/FieldService.js";
+
+var targetCropCode = null;
 
 $(document).ready(function () {
     $('.add-crop-btn').click(function(){
@@ -10,9 +12,12 @@ $(document).ready(function () {
     $('#save-crop-popup img').click(function(){
         $('#save-crop-popup').removeClass('d-flex');
     })
-    $('#card-set .crop-card .action > :nth-child(1)').click(function(){
+    $("#card-set").on("click", ".crop-card .action > :nth-child(1)", function () {
         $('#update-crop-popup').addClass('d-flex');
-    })
+        targetCropCode = $(this).data("id");
+        loadCropDataToUpdatePopup(targetCropCode);
+    });
+
     $('#update-crop-popup img').click(function(){
         $('#update-crop-popup').removeClass('d-flex')
     })
@@ -62,7 +67,7 @@ function loadTable(){
             <h2>${dataRefactor(crop.cropCommonName,8)}</h2>
           </div>
           <div class="d-flex align-items-center gap-3 action">
-            <svg
+            <svg data-id="${crop.cropCode}"
               xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="22"
@@ -194,3 +199,80 @@ function validateCrop(cropName, cropScientificName, cropSeason, cropType, image)
 
     return true;
 }
+
+function loadCropDataToUpdatePopup(cropCode) {
+    getCrop(cropCode).then((crop) => {
+        $('#update-crop-popup .crop-name-text').val(crop.cropCommonName);
+        $('#update-crop-popup .crop-type-text').val(crop.category);
+        $('#update-crop-popup .crop-scientific-text').val(crop.cropScientificName);
+        $('#update-crop-popup .crop-session-text').val(crop.cropSeason);
+        $('#update-crop-popup .field-combo').val(crop.fieldCode).select();
+
+        const file = base64ToFile(base64ToImageURL(crop.cropImage), "crop-image.png");
+        console.log(file);
+
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        $('#update-crop-popup .img-input')[0].files = dataTransfer.files;
+
+
+        getAllField().then((result) => {
+            $('#update-crop-popup .field-combo').empty()
+            result.forEach((field) => {
+                $('#update-crop-popup .field-combo').append(
+                    `<option value="${field.fieldCode}">${field.fieldCode} , ${field.fieldName}</option>`
+                )
+            })
+        }).catch((error) => {
+            console.error("Error loading field data:", error);
+        })
+
+    }).catch((error) => {
+        console.error("Error loading crop data:", error);
+    });
+}
+
+function base64ToFile(base64String, fileName) {
+    const arr = base64String.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], fileName, { type: mime });
+}
+
+$('#update-crop-popup button').click(function () {
+    const cropName = $('#update-crop-popup .crop-name-text').val();
+    const cropScientificName = $('#update-crop-popup .crop-scientific-text').val();
+    const cropSeason = $('#update-crop-popup .crop-session-text').val();
+    const cropType = $('#update-crop-popup .crop-type-text').val();
+    const image = $('#update-crop-popup .img-input')[0];
+    const fieldCode = $('#update-crop-popup .field-combo').val();
+
+    const formData = new FormData();
+    formData.append("cropName", cropName);
+    formData.append("cropType", cropType);
+    formData.append("cropSeason", cropSeason);
+    formData.append("cropScientificName", cropScientificName);
+    formData.append("cropImage", image.files[0]);
+    formData.append("FieldCode", fieldCode);
+
+    if (!validateCrop(cropName, cropScientificName, cropSeason, cropType, image)) {
+        return;
+    }
+
+    updateCrop(targetCropCode, formData)
+        .then((result) => {
+            $('#update-crop-popup').removeClass('d-flex');
+            showAlerts("Crop updated successfully", "success");
+            loadTable(); // Reload the table
+        })
+        .catch((error) => {
+            console.error("Error updating crop:", error);
+        });
+});
