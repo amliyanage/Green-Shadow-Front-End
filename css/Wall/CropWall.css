@@ -51,6 +51,18 @@ input + button {
     font-weight: 600;
 }
 
+.crop-card > :first-child{
+  height: 25vh;
+}
+
+.crop-card:hover > :first-child img{
+  transform: scale(1.5);
+}
+
+.crop-card > :first-child img{
+  object-fit: cover;
+}
+
 #save-crop-popup , #update-crop-popup , #view-crop-popup{
   display: none;
   animation: wipe 0.2s ease-in-out;

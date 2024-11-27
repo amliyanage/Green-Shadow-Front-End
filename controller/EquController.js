@@ -135,7 +135,7 @@ $('#save-equ-popup button').click(function(){
     const equ = {
         equipmentName: equName,
         equipmentType: equType,
-        status: "Not Available"
+        status: "Available"
     }
 
     if (!validateEquipment(equName, equType)){
@@ -251,7 +251,7 @@ $('#update-equ-popup button').click(function(){
     const equ = {
         equipmentName: equName,
         equipmentType: equType,
-        status: staffId === "N/A" && fieldCode === "N/A" ? "Not Available" : "Available",
+        status: staffId === "N/A" && fieldCode === "N/A" ? "Available" : "Not Available",
     }
 
     if (!validateEquipment(equName, equType)){

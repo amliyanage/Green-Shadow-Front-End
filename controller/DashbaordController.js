@@ -4,6 +4,12 @@ $(document).ready(function () {
     changeButtonColor("dashboard-icon");
 });
 
+$(".log-out-btn").click(function (){
+  alert("awaa")
+  saveCookie("authToken", "");
+  window.location.href = "../index.html";
+})
+
 //setInterval(refreshToken, 5000);
 
 $(".dashboard-icon").click(function () {

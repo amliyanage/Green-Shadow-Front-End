@@ -9,6 +9,10 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css"
+    />
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/Wall/CropWall.css" />
   </head>
@@ -27,7 +31,7 @@
             <div class="form-floating mb-3">
               <input
                 type="text"
-                class="form-control first-name-text"
+                class="form-control crop-name-text"
                 id="floatingInput"
                 placeholder=""
               />
@@ -36,7 +40,7 @@
             <div class="form-floating mb-3">
               <input
                 type="text"
-                class="form-control first-name-text"
+                class="form-control crop-type-text"
                 id="floatingInput"
                 placeholder=""
               />
@@ -47,7 +51,7 @@
             <div class="form-floating mb-3">
               <input
                 type="text"
-                class="form-control first-name-text"
+                class="form-control crop-scientific-text"
                 id="floatingInput"
                 placeholder=""
               />
@@ -56,7 +60,7 @@
             <div class="form-floating mb-3">
               <input
                 type="text"
-                class="form-control first-name-text"
+                class="form-control crop-session-text"
                 id="floatingInput"
                 placeholder=""
               />
@@ -77,9 +81,21 @@
                 <p>or</p>
                 <span class="browse-button">Browse file</span>
               </div>
-              <input id="file" type="file" />
+              <input class="img-input" id="file" type="file" />
             </label>
           </form>
+        </div>
+        <div class="form-floating mb-3">
+          <select
+                  class="form-control field-combo"
+                  id="floatingSelect"
+                  aria-label="Floating label select example"
+          >
+            <option value="" disabled selected>None</option>
+            <option value="Secintist">F-121213232-121212</option>
+            <option value="User">F-3232-2323</option>
+          </select>
+          <label for="floatingSelect">Select a field</label>
         </div>
         <button type="button" class="btn btn-outline-success w-100">
           Save Crop
@@ -377,25 +393,8 @@
       integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
       crossorigin="anonymous"
     ></script>
-    <script>
-      $('.add-crop-btn').click(function(){
-            $('#save-crop-popup').addClass('d-flex');
-        })
-        $('#save-crop-popup img').click(function(){
-          $('#save-crop-popup').removeClass('d-flex');
-        })
-        $('#card-set .crop-card .action > :nth-child(1)').click(function(){
-          $('#update-crop-popup').addClass('d-flex');
-        })
-        $('#update-crop-popup img').click(function(){
-          $('#update-crop-popup').removeClass('d-flex')
-        })
-        $('#card-set .crop-card .action > :nth-child(3)').click(function(){
-          $('#view-crop-popup').addClass('d-flex');
-        })
-        $('#view-crop-popup img').click(function(){
-          $('#view-crop-popup').removeClass('d-flex')
-        })
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../../controller/CropController.js" type="module"></script>
   </body>
 </html>
