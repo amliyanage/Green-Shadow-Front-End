@@ -21,9 +21,13 @@ $(document).ready(function () {
     $('#update-crop-popup img').click(function(){
         $('#update-crop-popup').removeClass('d-flex')
     })
-    $('#card-set .crop-card .action > :nth-child(3)').click(function(){
+
+    $("#card-set").on("click", ".crop-card .action > :nth-child(3)", function () {
         $('#view-crop-popup').addClass('d-flex');
-    })
+        targetCropCode = $(this).data("id");
+        loadDataViewCrop()
+    });
+
     $('#view-crop-popup img').click(function(){
         $('#view-crop-popup').removeClass('d-flex')
     })
@@ -79,7 +83,7 @@ function loadTable(){
                 fill="#9A9A9A"
               />
             </svg>
-            <svg
+            <svg data-id="${crop.cropCode}"
               xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="19"
@@ -91,7 +95,7 @@ function loadTable(){
                 fill="#9A9A9A"
               />
             </svg>
-            <svg
+            <svg data-id="${crop.cropCode}"
               xmlns="http://www.w3.org/2000/svg"
               width="20"
               height="14"
@@ -276,3 +280,18 @@ $('#update-crop-popup button').click(function () {
             console.error("Error updating crop:", error);
         });
 });
+
+function loadDataViewCrop(){
+    getCrop(targetCropCode).then((crop) => {
+        console.log(crop)
+        $('#view-crop-popup .crop-code-text').val(crop.cropCode);
+        $('#view-crop-popup .crop-name-text').val(crop.cropCommonName);
+        $('#view-crop-popup .crop-scientific-name-text').val(crop.cropScientificName);
+        $('#view-crop-popup .crop-season-text').val(crop.cropSeason);
+        $('#view-crop-popup .crop-type-text').val(crop.category);
+        $('#view-crop-popup .field-id-text').val(crop.fieldCode);
+        $('#view-crop-popup .crop-Img').attr('src',base64ToImageURL(crop.cropImage))
+    }).catch((error) => {
+        console.error("Error loading crop data:", error);
+    });
+}
