@@ -9,6 +9,10 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css"
+    />
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/Wall/CropDetailsWall.css" />
   </head>
@@ -329,25 +333,9 @@
       integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
       crossorigin="anonymous"
     ></script>
-    <script>
-      $(".add-log-btn").click(function () {
-        $("#save-log-popup").addClass("d-flex");
-      });
-      $("#save-log-popup img").click(function () {
-        $("#save-log-popup").removeClass("d-flex");
-      });
-      $("#card-set .log-card .action > :nth-child(1)").click(function () {
-        $("#update-log-popup").addClass("d-flex");
-      });
-      $("#update-log-popup img").click(function () {
-        $("#update-log-popup").removeClass("d-flex");
-      });
-      $("#card-set .log-card .action > :nth-child(3)").click(function () {
-        $("#view-log-popup").addClass("d-flex");
-      });
-      $("#view-log-popup img").click(function () {
-        $("#view-log-popup").removeClass("d-flex");
-      });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash/4.17.21/lodash.min.js"></script>
+    <script type="module" src="/controller/CropDetailsController.js"></script>
   </body>
 </html>
