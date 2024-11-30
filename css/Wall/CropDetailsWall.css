@@ -92,6 +92,50 @@ input + button {
   color: #009444;
 }
 
+#save-log-popup .select-field-set h6{
+    font-size: 1vw;
+    font-weight: 500;
+    letter-spacing: 0.6px;
+    color: #4c7ce3;
+    width: 100%;
+    text-align: center;
+  background: rgba(76, 124, 227, 0.27);
+  padding: 5px;
+  border-radius: 8px;
+  overflow: hidden;
+
+}
+
+#save-log-popup .select-staff-set h6{
+  font-size: 1vw;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  color: #9f4ce3;
+  width: 100%;
+  text-align: center;
+  background: rgba(159, 76, 227, 0.32);
+  padding: 5px;
+  border-radius: 8px;
+
+}
+
+#save-log-popup .select-field-set , #save-log-popup .select-crop-set , #save-log-popup .select-staff-set{
+  margin-top: 20px;
+}
+
+
+#save-log-popup .select-crop-set h6{
+  font-size: 1vw;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  color: #94ab31;
+  width: 100%;
+  text-align: center;
+  background: rgba(199, 227, 76, 0.4);
+  padding: 5px;
+  border-radius: 8px;
+}
+
 /* From Uiverse.io by vinodjangid07 */ 
 .file-upload-form {
   display: flex;

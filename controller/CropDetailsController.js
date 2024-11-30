@@ -1,4 +1,11 @@
 import { getAllCropDetails } from "../service/CropDetailsService.js";
+import {getAllField} from "../service/FieldService.js";
+import {getAllCrops} from "../service/CropService.js";
+import {getAllStaff} from "../service/StaffService.js";
+
+var selectCrop = []
+var selectField = []
+var selectStaff = []
 
 $(document).ready(function (){
     loadTable();
@@ -6,6 +13,7 @@ $(document).ready(function (){
 
 $(".add-log-btn").click(function () {
   $("#save-log-popup").addClass("d-flex");
+  loadDataToSavePopup()
 });
 $("#save-log-popup img").click(function () {
   $("#save-log-popup").removeClass("d-flex");
@@ -111,3 +119,103 @@ function dataRefactor(data, maxLength) {
 function base64ToImageURL(base64Data) {
     return `data:image/png;base64,${base64Data}`;
 }
+
+$('#save-crop-popup button').click(function(){
+
+})
+
+function loadDataToSavePopup() {
+    getAllField().then((data) => {
+        const fieldCombo = $('#save-log-popup .field-combo');
+        data.forEach((field) => {
+            fieldCombo.append(
+                `<option value="${field.fieldCode}">${field.fieldCode} - ${field.fieldName}</option>`
+            );
+        });
+    }).catch((error) => {
+        console.error("Error loading fields:", error);
+    });
+
+    getAllCrops().then((data) => {
+        const cropCombo = $('#save-log-popup .crop-combo');
+        data.forEach((crop) => {
+            cropCombo.append(
+                `<option value="${crop.cropCode}">${crop.cropCode} - ${crop.cropCommonName}</option>`
+            );
+        });
+    }).catch((error) => {
+        console.error("Error loading crops:", error);
+    })
+
+    getAllStaff().then((data) => {
+        const staffCombo = $('#save-log-popup .staff-combo');
+        data.forEach((staff) => {
+            staffCombo.append(
+                `<option value="${staff.id}">${staff.id} - ${staff.firstName}</option>`
+            );
+        });
+    }).catch((error) => {
+        console.error("Error loading staff:", error);
+    })
+}
+
+function loadSelectedDataToSave(){
+    $('#save-log-popup .select-field-set').empty();
+    selectField.forEach((field)=>{
+        $('#save-log-popup .select-field-set').append(
+            `<h6 data-id="${field}">${dataRefactor(field,20)}</h6>`
+        );
+    })
+
+    $('#save-log-popup .select-crop-set').empty();
+    selectCrop.forEach((crop)=>{
+        $('#save-log-popup .select-crop-set').append(
+            `<h6 data-id="${crop}">${dataRefactor(crop,20)}</h6>`
+        );
+    })
+
+    $('#save-log-popup .select-staff-set').empty();
+    selectStaff.forEach((staff)=>{
+        $('#save-log-popup .select-staff-set').append(
+            `<h6 data-id="${staff}">${dataRefactor(staff,20)}</h6>`
+        );
+    })
+}
+
+
+
+$('#save-log-popup .field-combo').change(function () {
+    selectField.push($(this).val());
+    loadSelectedDataToSave();
+    $(this).val('');
+})
+
+$('#save-log-popup .crop-combo').change(function () {
+    selectCrop.push($(this).val());
+    loadSelectedDataToSave();
+    $(this).val('');
+})
+
+$('#save-log-popup .staff-combo').change(function () {
+    selectStaff.push($(this).val());
+    loadSelectedDataToSave();
+    $(this).val('');
+})
+
+$('#save-log-popup .select-field-set').on('click','h6',function(){
+    const fieldCode = $(this).attr('data-id');
+    selectField = selectField.filter((field)=>field!=fieldCode);
+    loadSelectedDataToSave();
+})
+
+$('#save-log-popup .select-crop-set').on('click','h6',function(){
+    const cropCode = $(this).attr('data-id');
+    selectCrop = selectCrop.filter((crop)=>crop!=cropCode);
+    loadSelectedDataToSave();
+})
+
+$('#save-log-popup .select-staff-set').on('click','h6',function(){
+    const staffCode = $(this).attr('data-id');
+    selectStaff = selectStaff.filter((staff)=>staff!=staffCode);
+    loadSelectedDataToSave();
+})
