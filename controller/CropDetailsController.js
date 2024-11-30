@@ -1,7 +1,7 @@
 import {getAllCropDetails, getCropDetails, saveCropDetails, updateCropDetails} from "../service/CropDetailsService.js";
-import {getAllField} from "../service/FieldService.js";
-import {getAllCrops} from "../service/CropService.js";
-import {getAllStaff} from "../service/StaffService.js";
+import {getAllField, getField} from "../service/FieldService.js";
+import {getAllCrops, getCrop} from "../service/CropService.js";
+import {getAllStaff, getStaffMember} from "../service/StaffService.js";
 import {showAlerts} from "./DashbaordController.js";
 
 var targetLogCode = '';
@@ -30,9 +30,13 @@ $('#card-set').on('click','.log-card .action > :nth-child(1)',function(){
 $("#update-log-popup img").click(function () {
   $("#update-log-popup").removeClass("d-flex");
 });
-$("#card-set .log-card .action > :nth-child(3)").click(function () {
-  $("#view-log-popup").addClass("d-flex");
-});
+
+$("#card-set").on('click','.log-card .action > :nth-child(3)',function(){
+    $("#view-log-popup").addClass("d-flex");
+    targetLogCode = $(this).attr('data-id');
+    loadDataToViewPopup();
+})
+
 $("#view-log-popup img").click(function () {
   $("#view-log-popup").removeClass("d-flex");
 });
@@ -81,7 +85,7 @@ function loadTable() {
                 fill="#9A9A9A"
               />
             </svg>
-            <svg
+            <svg data-id="${cropDetail.logCode}"
               xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="19"
@@ -93,7 +97,7 @@ function loadTable() {
                 fill="#9A9A9A"
               />
             </svg>
-            <svg
+            <svg data-id="${cropDetail.logCode}"
               xmlns="http://www.w3.org/2000/svg"
               width="20"
               height="14"
@@ -332,3 +336,58 @@ $('#update-log-popup button').click(function(){
         console.error("Error updating log:",error);
     })
 })
+
+function loadDataToViewPopup(){
+    getCropDetails(targetLogCode).then((data)=>{
+        console.log(data);
+        $('#view-log-popup .crop-code-text').val(data.logCode);
+        $('#view-log-popup .log-date-text').val(dataRefactor(data.logDate,12));
+        $('#view-log-popup .details-text').val(data.logDetails);
+        $('#view-log-popup .observed-image').attr('src',base64ToImageURL(data.observedImage));
+
+        const filedSet = $('#view-log-popup .field-set')
+        filedSet.empty();
+
+        $(data.fieldCodes).each(function(index, field) {
+
+            getField(field).then((data)=>{
+                filedSet.append(
+                    `<h6>${dataRefactor(data.fieldName,10)} - ${dataRefactor(field,10)}</h6>`
+                );
+            }).catch((error)=>{
+                console.error("Error loading field details:",error);
+            })
+        });
+
+        const cropSet = $('#view-log-popup .crop-set')
+        cropSet.empty();
+
+        $(data.cropCodes).each(function(index, crop) {
+
+            getCrop(crop).then((data)=>{
+                cropSet.append(
+                    `<h6>${dataRefactor(data.cropCommonName,10)} - ${dataRefactor(crop,10)}</h6>`
+                );
+            }).catch((error)=>{
+                console.error("Error loading crop details:",error);
+            })
+        });
+
+        const staffSet = $('#view-log-popup .staff-set')
+        staffSet.empty();
+
+        $(data.staffIds).each(function(index, staff) {
+
+            getStaffMember(staff).then((data)=>{
+                staffSet.append(
+                    `<h6>${dataRefactor(data.firstName,10)} - ${dataRefactor(staff,10)}</h6>`
+                );
+            }).catch((error)=>{
+                console.error("Error loading staff details:",error);
+            })
+        });
+
+    }).catch((error)=>{
+        console.error("Error loading log details:",error);
+    })
+}

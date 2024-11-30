@@ -82,7 +82,14 @@ input + button {
 #view-log-popup .field-img{
   height: 40vh;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#view-log-popup .observed-image{
   object-fit: cover;
+    object-position: center;
 }
 
 #save-log-popup h2 , #update-log-popup h2 , #view-log-popup h2{
@@ -92,7 +99,7 @@ input + button {
   color: #009444;
 }
 
-#save-log-popup .select-field-set h6{
+#save-log-popup .select-field-set h6 , .field-set h6{
     font-size: 1vw;
     font-weight: 500;
     letter-spacing: 0.6px;
@@ -117,7 +124,22 @@ input + button {
   object-fit: cover;
 }
 
-#save-log-popup .select-staff-set h6{
+.select-sets{
+  height: auto;
+  max-height: 17vh;
+  overflow-y: scroll;
+  justify-content: space-between;
+}
+
+.select-sets::-webkit-scrollbar{
+  width: 0;
+}
+
+.select-sets h6{
+  font-size: 1vw;
+}
+
+#save-log-popup .select-staff-set h6 , .staff-set h6{
   font-size: 1vw;
   font-weight: 500;
   letter-spacing: 0.6px;
@@ -135,7 +157,7 @@ input + button {
 }
 
 
-#save-log-popup .select-crop-set h6{
+#save-log-popup .select-crop-set h6 , .crop-set h6{
   font-size: 1vw;
   font-weight: 500;
   letter-spacing: 0.6px;
