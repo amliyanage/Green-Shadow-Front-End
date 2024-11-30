@@ -103,7 +103,18 @@ input + button {
   padding: 5px;
   border-radius: 8px;
   overflow: hidden;
+}
 
+.log-card > :first-child{
+  height: 25vh !important;
+}
+
+.log-card:hover > :first-child img{
+  transform: scale(1.5);
+}
+
+.log-card > :first-child img{
+  object-fit: cover;
 }
 
 #save-log-popup .select-staff-set h6{

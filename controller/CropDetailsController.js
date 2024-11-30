@@ -1,7 +1,8 @@
-import { getAllCropDetails } from "../service/CropDetailsService.js";
+import {getAllCropDetails, saveCropDetails} from "../service/CropDetailsService.js";
 import {getAllField} from "../service/FieldService.js";
 import {getAllCrops} from "../service/CropService.js";
 import {getAllStaff} from "../service/StaffService.js";
+import {showAlerts} from "./DashbaordController.js";
 
 var selectCrop = []
 var selectField = []
@@ -219,3 +220,57 @@ $('#save-log-popup .select-staff-set').on('click','h6',function(){
     selectStaff = selectStaff.filter((staff)=>staff!=staffCode);
     loadSelectedDataToSave();
 })
+
+$('#save-log-popup button').click(function(){
+    const observedImage = $('#save-log-popup .observed-image')[0];
+    const description = $('#save-log-popup .description').val();
+
+    const formData = new FormData();
+    formData.append('observedImg',observedImage.files[0]);
+    formData.append('logDetails',description);
+
+    const param = {
+        fieldCode : selectField.join(','),
+        cropCode : selectCrop.join(','),
+        staffId : selectStaff.join(',')
+    }
+
+    if (!description){
+        showAlerts('Please enter description','error');
+        return;
+    }
+    if (!observedImage.files[0]){
+        showAlerts('Please select image','error');
+        return;
+    }
+    if (selectField.length === 0){
+        showAlerts('Please select field','error');
+        return;
+    }
+    if (selectCrop.length === 0){
+        showAlerts('Please select crop','error');
+        return;
+    }
+    if (selectStaff.length === 0){
+        showAlerts('Please select staff','error');
+        return;
+    }
+
+    saveCropDetails(param,formData).then((data)=>{
+        showAlerts('log saved successfully','success');
+        loadTable();
+        clearField()
+    }).catch((error)=>{
+        console.error("Error saving log:",error);
+    })
+
+})
+
+function clearField(){
+    selectCrop = [];
+    selectField = [];
+    selectStaff = [];
+    loadSelectedDataToSave();
+    $('#save-log-popup .observed-image')[0].value = '';
+    $('#save-log-popup .description').val('');
+}
