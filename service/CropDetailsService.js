@@ -78,3 +78,21 @@ export function updateCropDetails(logCode, cropDetails){
         })
     })
 }
+
+export function deleteCropDetails(logCode){
+    return new Promise((resolve, reject) =>{
+        $.ajax({
+            url : `http://localhost:5055/greenshadow/api/v1/cropDetails/${logCode}`,
+            type : "DELETE",
+            headers: {
+                Authorization: "Bearer " + getCookie("authToken")
+            },
+            success: function(result){
+                resolve(result);
+            },
+            error: function(xhr, status, error){
+                reject(error);
+            },
+        })
+    })
+}

@@ -1,4 +1,10 @@
-import {getAllCropDetails, getCropDetails, saveCropDetails, updateCropDetails} from "../service/CropDetailsService.js";
+import {
+    deleteCropDetails,
+    getAllCropDetails,
+    getCropDetails,
+    saveCropDetails,
+    updateCropDetails
+} from "../service/CropDetailsService.js";
 import {getAllField, getField} from "../service/FieldService.js";
 import {getAllCrops, getCrop} from "../service/CropService.js";
 import {getAllStaff, getStaffMember} from "../service/StaffService.js";
@@ -31,11 +37,17 @@ $("#update-log-popup img").click(function () {
   $("#update-log-popup").removeClass("d-flex");
 });
 
+$('#card-set').on('click','.log-card .action > :nth-child(2)',function(){
+    targetLogCode = $(this).attr('data-id');
+    deleteLog();
+})
+
 $("#card-set").on('click','.log-card .action > :nth-child(3)',function(){
     $("#view-log-popup").addClass("d-flex");
     targetLogCode = $(this).attr('data-id');
     loadDataToViewPopup();
 })
+
 
 $("#view-log-popup img").click(function () {
   $("#view-log-popup").removeClass("d-flex");
@@ -390,4 +402,32 @@ function loadDataToViewPopup(){
     }).catch((error)=>{
         console.error("Error loading log details:",error);
     })
+}
+
+function deleteLog(){
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to delete this Log?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "Cancel",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteCropDetails(targetLogCode)
+                .then((result) => {
+                    loadTable();
+                    Swal.fire("Deleted!", "Log has been deleted.", "success");
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire("Cancelled", "Your log is safe.", "info");
+        }
+    });
+
 }
