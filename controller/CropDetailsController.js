@@ -1,9 +1,10 @@
-import {getAllCropDetails, saveCropDetails} from "../service/CropDetailsService.js";
+import {getAllCropDetails, getCropDetails, saveCropDetails, updateCropDetails} from "../service/CropDetailsService.js";
 import {getAllField} from "../service/FieldService.js";
 import {getAllCrops} from "../service/CropService.js";
 import {getAllStaff} from "../service/StaffService.js";
 import {showAlerts} from "./DashbaordController.js";
 
+var targetLogCode = '';
 var selectCrop = []
 var selectField = []
 var selectStaff = []
@@ -19,9 +20,13 @@ $(".add-log-btn").click(function () {
 $("#save-log-popup img").click(function () {
   $("#save-log-popup").removeClass("d-flex");
 });
-$("#card-set .log-card .action > :nth-child(1)").click(function () {
-  $("#update-log-popup").addClass("d-flex");
-});
+
+$('#card-set').on('click','.log-card .action > :nth-child(1)',function(){
+    $("#update-log-popup").addClass("d-flex");
+    targetLogCode = $(this).attr('data-id');
+    loadDataToUpdatePopup()
+})
+
 $("#update-log-popup img").click(function () {
   $("#update-log-popup").removeClass("d-flex");
 });
@@ -64,7 +69,7 @@ function loadTable() {
           <div
             class="d-flex align-items-center gap-3 action justify-content-center"
           >
-            <svg
+            <svg data-id="${cropDetail.logCode}"
               xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="22"
@@ -274,3 +279,56 @@ function clearField(){
     $('#save-log-popup .observed-image')[0].value = '';
     $('#save-log-popup .description').val('');
 }
+
+function loadDataToUpdatePopup(){
+    getCropDetails(targetLogCode).then((data)=>{
+        console.log(data);
+        $('#update-log-popup .details-text').val(data.logDetails);
+        const file = base64ToFile(base64ToImageURL(data.observedImage),'crop_details.png');
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        $('#update-log-popup .input-file')[0].files = dataTransfer.files;
+    }).catch((error)=>{
+        console.error("Error loading log details:",error);
+    })
+}
+
+function base64ToFile(base64String, fileName) {
+    const arr = base64String.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], fileName, { type: mime });
+}
+
+$('#update-log-popup button').click(function(){
+    const observedImage = $('#update-log-popup .input-file')[0];
+    const description = $('#update-log-popup .details-text').val();
+
+    const formData = new FormData();
+    formData.append('observedImg',observedImage.files[0]);
+    formData.append('logDetails',description);
+
+    if (!description){
+        showAlerts('Please enter description','error');
+        return;
+    }
+    if (!observedImage.files[0]){
+        showAlerts('Please select image','error');
+        return;
+    }
+
+    updateCropDetails(targetLogCode,formData).then((data)=>{
+        showAlerts('log updated successfully','success');
+        loadTable();
+        clearField()
+    }).catch((error)=>{
+        console.error("Error updating log:",error);
+    })
+})
