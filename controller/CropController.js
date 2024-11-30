@@ -1,4 +1,4 @@
-import {getAllCrops, getCrop, saveCrop, updateCrop} from "../service/CropService.js";
+import {deleteCrop, getAllCrops, getCrop, saveCrop, updateCrop} from "../service/CropService.js";
 import {showAlerts} from "./DashbaordController.js";
 import {getAllField} from "../service/FieldService.js";
 
@@ -31,6 +31,11 @@ $(document).ready(function () {
     $('#view-crop-popup img').click(function(){
         $('#view-crop-popup').removeClass('d-flex')
     })
+
+    $("#card-set").on("click", ".crop-card .action > :nth-child(2)", function () {
+        targetCropCode = $(this).data("id");
+        deleteCropFrom()
+    });
 
     loadTable()
 })
@@ -294,4 +299,32 @@ function loadDataViewCrop(){
     }).catch((error) => {
         console.error("Error loading crop data:", error);
     });
+}
+
+function deleteCropFrom(){
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to delete this Crop?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "Cancel",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteCrop(targetCropCode)
+                .then((result) => {
+                    loadTable();
+                    Swal.fire("Deleted!", "Crop has been deleted.", "success");
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire("Cancelled", "Your item is safe.", "info");
+        }
+    });
+
 }

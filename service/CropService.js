@@ -77,3 +77,21 @@ export function updateCrop(cropCode, formData) {
         });
     });
 }
+
+export function deleteCrop(cropCode){
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url : `http://localhost:5055/greenshadow/api/v1/crop/${cropCode}`,
+            type : "DELETE",
+            headers: {
+                Authorization: "Bearer " + getCookie("authToken")
+            },
+            success: function(result){
+                resolve(result);
+            },
+            error: function(xhr, status, error){
+                reject(error);
+            },
+        })
+    })
+}
