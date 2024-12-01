@@ -48,6 +48,18 @@ $("#card-set").on('click','.log-card .action > :nth-child(3)',function(){
     loadDataToViewPopup();
 })
 
+$('.search-input').on("keyup", function (){
+    let search = $(this).val();
+    $('#card-set .log-card').each(function (){
+        let logCode = $(this).find('h2').text().toLowerCase();
+        if (logCode.includes(search.toLowerCase())){
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
+    })
+})
+
 
 $("#view-log-popup img").click(function () {
   $("#view-log-popup").removeClass("d-flex");
