@@ -326,5 +326,16 @@ function deleteCropFrom(){
             Swal.fire("Cancelled", "Your item is safe.", "info");
         }
     });
-
 }
+
+$('.search-input').on("keyup", function (){
+    let search = $(this).val();
+    $('#card-set .crop-card').each(function (){
+        let logCode = $(this).find('h2').text().toLowerCase();
+        if (logCode.includes(search.toLowerCase())){
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
+    })
+})
