@@ -78,3 +78,24 @@ export function deleteField(field_code){
         })
     })
 }
+
+export function updateField(formData, field_code,staffId){
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: `http://localhost:5055/greenshadow/api/v1/field/${field_code}?staffIds=${staffId}`,
+            type: "PATCH",
+            headers: {
+                Authorization: "Bearer " + getCookie("authToken"), // Ensure token is valid
+            },
+            data: formData,
+            processData: false,  // Prevent jQuery from processing the data
+            contentType: false,  // Let FormData set the correct content type
+            success: function(result) {
+                resolve(result);
+            },
+            error: function(xhr, status, error) {
+                reject(error);
+            }
+        });
+    })
+}

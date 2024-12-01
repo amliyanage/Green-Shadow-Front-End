@@ -1,9 +1,10 @@
-import { getAllField, getField, saveField ,deleteField } from "../service/FieldService.js";
+import {getAllField, getField, saveField, deleteField, updateField} from "../service/FieldService.js";
 import { showAlerts } from "./DashbaordController.js";
-import { getStaffMember } from "../service/StaffService.js";
+import {getAllStaff, getStaffMember} from "../service/StaffService.js";
 
 var Longitude = 0;
 var Latitude = 0;
+var selectedStaff = []
 
 var targetFieldCode = null;
 
@@ -299,11 +300,74 @@ function loadDataToUpdateForm(){
     $("#update-field-popup .fieldSize-text").val(result.fieldSize);
     Longitude = result.fieldLocation.x;
     Latitude = result.fieldLocation.y;
-    viewLocOnMap(Longitude, Latitude);
+    loadMapToUpdate(Longitude,Latitude);
+
+    const file1 = base64ToFile(base64ToImageURL(result.image1), "image1.jpg");
+    const file2 = base64ToFile(base64ToImageURL(result.image2), "image2.jpg");
+
+    const dataTransfer1 = new DataTransfer();
+    const dataTransfer2 = new DataTransfer();
+
+    dataTransfer1.items.add(file1);
+    dataTransfer2.items.add(file2);
+
+    $("#update-field-popup .image-1")[0].files = dataTransfer1.files;
+    $("#update-field-popup .image-2")[0].files = dataTransfer2.files;
+
+    $("#update-field-popup .selected-staff").empty();
+    selectedStaff = result.staffId;
+    loadSelectStaff()
+
+    getAllStaff().then((staffList) => {
+      $("#update-field-popup .staff-combo").empty().append(
+          `<option value="N/A">N/A</option>`
+      )
+        staffList.forEach((staff) => {
+            $("#update-field-popup .staff-combo").append(
+            `<option value="${staff.id}">${dataRefactor(staff.id,15)} , ${staff.firstName}</option>`
+            );
+        });
+    }).catch((error) => {
+        console.log(error);
+    })
+
     }).catch((error) => {
       console.log(error);
     });
 };
+
+$('#update-field-popup .staff-combo').on('change', function () {
+  const staffId = $(this).val();
+  let alreadyAdded = false;
+
+  selectedStaff.forEach((staff) => {
+    if (staff === staffId) {
+      showAlerts("Staff member already added", "error");
+      alreadyAdded = true;
+    }
+  });
+
+  if (!alreadyAdded) {
+    selectedStaff.push(staffId);
+    $('#update-field-popup .staff-combo').val("N/A");
+    loadSelectStaff();
+  }
+});
+
+function loadSelectStaff() {
+    $('#update-field-popup .selected-staff').empty()
+  selectedStaff.forEach((staffId) => {
+    $('#update-field-popup .selected-staff').append(
+        `<h6 data-id="${staffId}">${dataRefactor(staffId,15)}</h6>`
+    )
+  })
+}
+
+$('#update-field-popup .selected-staff').on('click', 'h6', function () {
+    const staffId = $(this).attr('data-id');
+    selectedStaff = selectedStaff.filter((staff) => staff !== staffId);
+    loadSelectStaff();
+});
 
 function viewLocOnMap (Longitude, Latitude,popupType) {
   let map;
@@ -352,16 +416,18 @@ function viewLocOnMap (Longitude, Latitude,popupType) {
   initMap();
 }
 
-function convertBase64ToFileInput(base64){
-  const byteArray = [];
-  for (let i = 0; i < base64.length; i++) {
-    byteArray.push(byteArray.charCodeAt(i));
+function base64ToFile(base64String, fileName) {
+  const arr = base64String.split(',');
+  const mime = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
   }
-  
-  const file = new Blob([new Uint8Array(byteArray)], { type: "image/jpeg" });
-  const dataTransfer = new DataTransfer();
-  dataTransfer.items.add(new File([file], "image.jpg"));
-  return dataTransfer.files;
+
+  return new File([u8arr], fileName, { type: mime });
 }
 
 function loadDataToFieldViewForm() {
@@ -447,4 +513,79 @@ function deleteFieldData(){
 
 }
 
+function loadMapToUpdate(x,y){
+    let map;
+    let marker;
+    const defaultLocation = { lat: y, lng: x };
+
+    function initMap() {
+        alert("Map Loaded");
+
+        const mapElement = $("#update-field-popup #map")[0];
+
+        map = new google.maps.Map(mapElement, {
+        center: defaultLocation,
+        zoom: 13,
+        });
+
+        marker = new google.maps.Marker({
+        position: defaultLocation,
+        map: map,
+        });
+
+        // Add a click listener to the map
+        google.maps.event.addListener(map, "click", function (event) {
+        const clickedLocation = event.latLng;
+
+        // Remove existing marker, if any
+        if (marker) marker.setMap(null);
+
+        // Place a new marker
+        marker = new google.maps.Marker({
+            position: clickedLocation,
+            map: map,
+        });
+
+        Longitude = clickedLocation.lng();
+        Latitude = clickedLocation.lat();
+        // alert(
+        //   `Latitude: ${clickedLocation.lat()}, Longitude: ${clickedLocation.lng()}`
+        // );
+        });
+    }
+
+    initMap();
+}
+
+$('#update-field-popup button').click(function () {
+  const fieldName = $("#update-field-popup .fieldName-text").val();
+  const fieldSize = $("#update-field-popup .fieldSize-text").val();
+  const image1 = $("#update-field-popup .image-1")[0];
+  const image2 = $("#update-field-popup .image-2")[0];
+
+  const formData = new FormData();
+  formData.append("fieldName", fieldName);
+  formData.append("fieldSize", fieldSize);
+  formData.append("image1", image1.files[0]);
+  formData.append("image2", image2.files[0]);
+  formData.append("fieldLocationX", Longitude);
+  formData.append("fieldLocationY", Latitude);
+
+  if (!validateForm(fieldName, fieldSize, image1, image2)) {
+    return;
+  }
+
+  let staffId = "N/A";
+  if (selectedStaff.length !== 0) {
+    staffId = selectedStaff.join(",");
+  }
+
+  console.log(staffId);
+  updateField(formData, targetFieldCode, staffId).then((result) => {
+    showAlerts("Field updated successfully", "success");
+    loadTable();
+  }).catch((error) => {
+    console.log(error);
+  });
+});
 

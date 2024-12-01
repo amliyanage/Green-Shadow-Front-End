@@ -123,6 +123,29 @@ input + button {
   width: 100%;
 }
 
+#update-field-popup .selected-staff{
+  display: flex;
+  overflow-x: scroll;
+    gap: 10px;
+  width: 100%;
+  height: 50px;
+}
+
+#update-field-popup .selected-staff h6{
+  font-size: 1vw;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  color: #9f4ce3;
+  text-align: center;
+  background: rgba(159, 76, 227, 0.32);
+  padding: 5px;
+  border-radius: 8px;
+}
+
+#update-field-popup #map{
+  height: 400px;
+}
+
 #view-field-popup .table > div{
   grid-template-columns: 1fr 1fr;
   text-align: center;
