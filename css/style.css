@@ -35,10 +35,22 @@
   --font-24px: 1.25vw;
 }
 
+@media screen and (max-width: 1440px) {
+  #card-set{
+    grid-template-columns: repeat(3,1fr) !important;
+  }
+}
+
 @media screen and (max-width: 1348px) {
   :root {
     --font-13px: 0.879vw; /* Corrected to maintain similar scaling */
     --font-18px: 0.99vw;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  #card-set{
+    grid-template-columns: repeat(2,1fr) !important;
   }
 }
 

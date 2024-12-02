@@ -10,7 +10,7 @@ $(".log-out-btn").click(function (){
   window.location.href = "../index.html";
 })
 
-//setInterval(refreshToken, 5000);
+setInterval(refreshToken, 5000);
 
 $(".dashboard-icon").click(function () {
   changeButtonColor("dashboard-icon");
@@ -65,16 +65,16 @@ function changeButtonColor(button) {
   });
 }
 
-function refreshToken(){
+function refreshToken() {
   tokenRefresh()
-    .then((response) => {
-      const token = response.token;
-      saveCookie("authToken", token);
-      console.log("Token refreshed successfully.",getCookie("authToken"));
-    })
-    .catch((error) => {
-      console.error("Token refresh failed.");
-    });
+      .then((response) => {
+        const token = response.token;
+        saveCookie("authToken", token);
+        console.log("Token refreshed successfully:", getCookie("authToken"));
+      })
+      .catch((error) => {
+        console.error("Token refresh failed:", error);
+      });
 }
 
 export function showAlerts(meessage , type){

@@ -15,20 +15,18 @@ export function getCookie(name) {
 export function tokenRefresh() {
   const token = getCookie("authToken");
   console.log("Token: in service", token);
+
   return new Promise((resolve, reject) => {
     $.ajax({
-      url: "http://localhost:5055/greenshadow/v1/auth/refresh",
+      url: `http://localhost:5055/greenshadow/v1/auth/refresh?refreshToken=${token}`,
       type: "POST",
-      data: {
-        refreshToken: token,
-      },
-      contentType: "application/json",
       success: function (result) {
-        console.log(result);
-        resolve(result); // resolving with the response result
+        console.log("Token refresh response:", result);
+        resolve(result); // Resolve promise with API response
       },
       error: function (xhr, status, error) {
-        reject(error); // rejecting on error
+        console.error(`Error: ${status} - ${error}`); // Log error details
+        reject(error); // Reject promise with error
       },
     });
   });
