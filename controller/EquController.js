@@ -1,22 +1,29 @@
 import {deleteEqu, getAllEqu, getEqu, saveEqu, updateEqu} from "../service/EquService.js";
-import {showAlerts} from "./DashbaordController.js";
+import {showAlerts} from "./DashboardController.js";
 import {getAllStaff} from "../service/StaffService.js";
 import {getAllField} from "../service/FieldService.js";
+import {checkAccess} from "../util/AccessController.js";
 
 var targetId = null;
 
 $(document).ready(function() {
-    $('.add-equ-btn').click(function(){
-        $('#save-equ-popup').addClass('d-flex');
+    $('.add-equ-btn').click(async function(){
+        const access = await checkAccess("equipment")
+        if (access) {
+            $('#save-equ-popup').addClass('d-flex');
+        }
     })
     $('#save-equ-popup img').click(function(){
         $('#save-equ-popup').removeClass('d-flex');
     })
 
-    $(".table").on("click", ".action > :nth-child(1)", function () {
-        $('#update-equ-popup').addClass('d-flex');
-        targetId = $(this).data('id');
-        loadDataToUpdate()
+    $(".table").on("click", ".action > :nth-child(1)",async function () {
+        const access = await checkAccess("equipment")
+        if (access) {
+            $('#update-equ-popup').addClass('d-flex');
+            targetId = $(this).data('id');
+            loadDataToUpdate()
+        }
     })
     $('#update-equ-popup img').click(function(){
         $('#update-equ-popup').removeClass('d-flex');
@@ -31,9 +38,12 @@ $(document).ready(function() {
         $('#view-equ-popup').removeClass('d-flex');
     })
 
-    $(".table").on("click", ".action > :nth-child(2)", function () {
-        targetId = $(this).data("id");
-        deleteEquFrom();
+    $(".table").on("click", ".action > :nth-child(2)",async function () {
+        const access = await checkAccess("equipment")
+        if (access) {
+            targetId = $(this).data("id");
+            deleteEquFrom();
+        }
     });
 
     $(".search-bar").on("keyup", function () {

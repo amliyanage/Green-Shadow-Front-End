@@ -1,21 +1,28 @@
 import {deleteCrop, getAllCrops, getCrop, saveCrop, updateCrop} from "../service/CropService.js";
-import {showAlerts} from "./DashbaordController.js";
+import {showAlerts} from "./DashboardController.js";
 import {getAllField} from "../service/FieldService.js";
+import {checkAccess} from "../util/AccessController.js";
 
 var targetCropCode = null;
 
 $(document).ready(function () {
-    $('.add-crop-btn').click(function(){
-        $('#save-crop-popup').addClass('d-flex');
-        loadDataToSavePopup()
+    $('.add-crop-btn').click(async function(){
+        const access = await checkAccess("crop")
+        if (access) {
+            $('#save-crop-popup').addClass('d-flex');
+            loadDataToSavePopup()
+        }
     })
     $('#save-crop-popup img').click(function(){
         $('#save-crop-popup').removeClass('d-flex');
     })
-    $("#card-set").on("click", ".crop-card .action > :nth-child(1)", function () {
-        $('#update-crop-popup').addClass('d-flex');
-        targetCropCode = $(this).data("id");
-        loadCropDataToUpdatePopup(targetCropCode);
+    $("#card-set").on("click", ".crop-card .action > :nth-child(1)",async function () {
+        const access = await checkAccess("crop")
+        if (access) {
+            $('#update-crop-popup').addClass('d-flex');
+            targetCropCode = $(this).data("id");
+            loadCropDataToUpdatePopup(targetCropCode);
+        }
     });
 
     $('#update-crop-popup img').click(function(){
@@ -32,9 +39,12 @@ $(document).ready(function () {
         $('#view-crop-popup').removeClass('d-flex')
     })
 
-    $("#card-set").on("click", ".crop-card .action > :nth-child(2)", function () {
-        targetCropCode = $(this).data("id");
-        deleteCropFrom()
+    $("#card-set").on("click", ".crop-card .action > :nth-child(2)",async function () {
+        const access = await checkAccess("crop")
+        if (access) {
+            targetCropCode = $(this).data("id");
+            deleteCropFrom()
+        }
     });
 
     loadTable()

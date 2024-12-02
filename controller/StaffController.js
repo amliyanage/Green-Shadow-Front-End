@@ -1,24 +1,33 @@
 import { addStaff, deleteStaff, getAllStaff, getStaffMember, updateStaff } from "../service/StaffService.js";
-import { showAlerts } from "./DashbaordController.js";
+import {showAlerts} from "./DashboardController.js";
+import {checkAccess} from "../util/AccessController.js";
 
 var targetStaffId = null;
 
 $(document).ready(function () {
 
-  $(".add-member-btn").click(function () {
-    $("#save-staff-popup").addClass("d-flex");
+  $(".add-member-btn").click(async function () {
+    const access = await checkAccess("staff")
+    console.log("staff :",access)
+    if (access) {
+      $("#save-staff-popup").addClass("d-flex");
+    }
   });
+
   $("#save-staff-popup img").click(function () {
     $("#save-staff-popup").removeClass("d-flex");
   });
 
   loadTable();
 
-  $(".table").on("click", ".action > :nth-child(1)", function () {
-    $("#update-staff-popup").addClass("d-flex");
-    const staffId = $(this).data("id");
-    loadDataToUpdateForm(staffId);
-    targetStaffId = staffId;
+  $(".table").on("click", ".action > :nth-child(1)",async function () {
+    const access = await checkAccess("staff")
+    if(access){
+      $("#update-staff-popup").addClass("d-flex");
+      const staffId = $(this).data("id");
+      loadDataToUpdateForm(staffId);
+      targetStaffId = staffId;
+    }
   });
 
   $("#update-staff-popup img").click(function () {
@@ -35,9 +44,12 @@ $(document).ready(function () {
     $("#view-staff-popup").removeClass("d-flex");
   });
 
-  $(".table").on("click", ".action > :nth-child(2)", function () {
-    targetStaffId = $(this).data("id");
-    deleteStaffMember();
+  $(".table").on("click", ".action > :nth-child(2)",async function () {
+    const access = await checkAccess("staff")
+    if(access) {
+      targetStaffId = $(this).data("id");
+      deleteStaffMember();
+    }
   });
 
    $(".search-bar").on("keyup", function () {
@@ -54,7 +66,6 @@ $(document).ready(function () {
       });
 
    });
-
 });
 
 function loadTable (){

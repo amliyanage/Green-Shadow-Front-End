@@ -42,7 +42,8 @@ $(".cssbuttons-io-button").click(function () {
   if ($("#checkbox").prop("checked")) {
     login(email, password)
       .then((response) => {
-        alert("awaaa");
+        //alert("awaaa");
+        localStorage.setItem("userEmail", email);
         const token = response.token;
         saveCookie("authToken", token);
         console.log("Token saved as cookie:", getCookie("authToken") );

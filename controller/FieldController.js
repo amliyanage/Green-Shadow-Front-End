@@ -1,6 +1,7 @@
 import {getAllField, getField, saveField, deleteField, updateField} from "../service/FieldService.js";
-import { showAlerts } from "./DashbaordController.js";
+import { showAlerts } from "./DashboardController.js";
 import {getAllStaff, getStaffMember} from "../service/StaffService.js";
+import {checkAccess} from "../util/AccessController.js";
 
 var Longitude = 0;
 var Latitude = 0;
@@ -11,19 +12,25 @@ var targetFieldCode = null;
 $(document).ready(function () {
   loadTable();
 
-  $(".add-field-btn").click(function () {
-    $("#save-field-popup").addClass("d-flex");
-    loadMap();
+  $(".add-field-btn").click(async function () {
+    const access = await checkAccess("field")
+    if (access){
+      $("#save-field-popup").addClass("d-flex");
+      loadMap();
+    }
   });
   $("#save-field-popup img").click(function () {
     $("#save-field-popup").removeClass("d-flex");
   });
 
-  $("#card-set").on("click",".field-card .action > :nth-child(1)",function () {
+  $("#card-set").on("click",".field-card .action > :nth-child(1)",async function () {
+    const access = await checkAccess("field")
+    if (access) {
       $("#update-field-popup").addClass("d-flex");
       targetFieldCode = $(this).attr("data-id");
       loadDataToUpdateForm();
       loadMap();
+    }
     }
   );
 
@@ -41,9 +48,12 @@ $(document).ready(function () {
     $("#update-field-popup").removeClass("d-flex");
   });
 
-  $("#card-set").on("click",".field-card .action > :nth-child(2)",function () {
-    targetFieldCode = $(this).attr("data-id");
-    deleteFieldData()
+  $("#card-set").on("click",".field-card .action > :nth-child(2)",async function () {
+    const access = await checkAccess("field")
+    if (access) {
+      targetFieldCode = $(this).attr("data-id");
+      deleteFieldData()
+    }
   })
 
   $('.search-bar').on('keyup', function () {
@@ -144,7 +154,6 @@ function dataRefactor(data, maxLength) {
 function base64ToImageURL(base64Data) {
   return `data:image/png;base64,${base64Data}`;
 }
-
 function loadMap() {
   let map;
   let marker;

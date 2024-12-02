@@ -1,20 +1,28 @@
 import { getAllStaff } from "../service/StaffService.js";
 import { addVehicle, deleteVehicle, getAllVehicles, getVehicle, updateVehicle } from "../service/VehicleService.js";
-import { showAlerts } from "./DashbaordController.js";
+import { showAlerts } from "./DashboardController.js";
+import {checkAccess} from "../util/AccessController.js";
 
 var targetVehicleId = null;
 
 $(document).ready(function () {
-  $(".add-vehicle-btn").click(function () {
-    $("#save-vehicle-popup").addClass("d-flex");
+  $(".add-vehicle-btn").click(async function () {
+    const access = await checkAccess("vehicle")
+    if (access) {
+      $("#save-vehicle-popup").addClass("d-flex");
+    }
   });
+
   $("#save-vehicle-popup img").click(function () {
     $("#save-vehicle-popup").removeClass("d-flex");
   });
-  $(".table").on("click", ".action > :nth-child(1)", function () {
-    targetVehicleId = $(this).data("id");
-    $("#update-vehicle-popup").addClass("d-flex");
-    loadDataToUbdateForm();
+  $(".table").on("click", ".action > :nth-child(1)",async function () {
+    const access = await checkAccess("vehicle")
+    if (access) {
+      targetVehicleId = $(this).data("id");
+      $("#update-vehicle-popup").addClass("d-flex");
+      loadDataToUbdateForm();
+    }
   });
   $("#update-vehicle-popup img").click(function () {
     $("#update-vehicle-popup").removeClass("d-flex");
@@ -28,9 +36,12 @@ $(document).ready(function () {
     $("#view-vehicle-popup").removeClass("d-flex");
   });
 
-  $(".table").on("click", ".action > :nth-child(2)", function () {
-    targetVehicleId = $(this).data("id");
-    deleteVehicleFrom();
+  $(".table").on("click", ".action > :nth-child(2)",async function () {
+    const access = await checkAccess("vehicle")
+    if (access) {
+      targetVehicleId = $(this).data("id");
+      deleteVehicleFrom();
+    }
   });
 
   $(".search-bar").on("keyup", function () {

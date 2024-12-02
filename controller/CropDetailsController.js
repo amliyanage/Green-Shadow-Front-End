@@ -8,7 +8,8 @@ import {
 import {getAllField, getField} from "../service/FieldService.js";
 import {getAllCrops, getCrop} from "../service/CropService.js";
 import {getAllStaff, getStaffMember} from "../service/StaffService.js";
-import {showAlerts} from "./DashbaordController.js";
+import {showAlerts} from "./DashboardController.js";
+import {checkAccess} from "../util/AccessController.js";
 
 var targetLogCode = '';
 var selectCrop = []
@@ -19,27 +20,37 @@ $(document).ready(function (){
     loadTable();
 });
 
-$(".add-log-btn").click(function () {
-  $("#save-log-popup").addClass("d-flex");
-  loadDataToSavePopup()
+$(".add-log-btn").click(async function () {
+    const access = await checkAccess("log")
+    if (access) {
+        $("#save-log-popup").addClass("d-flex");
+        loadDataToSavePopup()
+    }
 });
+
 $("#save-log-popup img").click(function () {
   $("#save-log-popup").removeClass("d-flex");
 });
 
-$('#card-set').on('click','.log-card .action > :nth-child(1)',function(){
-    $("#update-log-popup").addClass("d-flex");
-    targetLogCode = $(this).attr('data-id');
-    loadDataToUpdatePopup()
+$('#card-set').on('click','.log-card .action > :nth-child(1)',async function(){
+    const access = await checkAccess("log")
+    if (access) {
+        $("#update-log-popup").addClass("d-flex");
+        targetLogCode = $(this).attr('data-id');
+        loadDataToUpdatePopup()
+    }
 })
 
 $("#update-log-popup img").click(function () {
   $("#update-log-popup").removeClass("d-flex");
 });
 
-$('#card-set').on('click','.log-card .action > :nth-child(2)',function(){
-    targetLogCode = $(this).attr('data-id');
-    deleteLog();
+$('#card-set').on('click','.log-card .action > :nth-child(2)',async function(){
+    const access = await checkAccess("log")
+    if (access) {
+        targetLogCode = $(this).attr('data-id');
+        deleteLog();
+    }
 })
 
 $("#card-set").on('click','.log-card .action > :nth-child(3)',function(){

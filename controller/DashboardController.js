@@ -78,7 +78,7 @@ function refreshToken() {
 }
 
 export function showAlerts(meessage , type){
-  alert("awaa alert")
+  //alert("awaa alert")
   const notyf = new Notyf({
     duration: 3000,
     position: {
