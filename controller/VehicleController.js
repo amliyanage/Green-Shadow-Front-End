@@ -64,7 +64,6 @@ function loadTable() {
     .then((result) => {
       const tableBody = $(".table .table-body");
       tableBody.empty();
-
       result.forEach((element) => {
         tableBody.append(`
                 

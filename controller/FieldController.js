@@ -160,7 +160,7 @@ function loadMap() {
   const defaultLocation = { lat: 6.0367, lng: 80.217 }; // Galle
 
   function initMap() {
-    alert("Map Loaded");
+    //alert("Map Loaded");
 
     const mapElement = $("#save-field-popup #map")[0];
 

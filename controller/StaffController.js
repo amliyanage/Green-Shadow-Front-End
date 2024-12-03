@@ -56,7 +56,7 @@ $(document).ready(function () {
 
       var searchValue = $(this).val();
       $(".table .table-body > div").each(function () {
-        const staffId = $(this).children(":nth-child(1)").text();
+        const staffId = $(this).children(":nth-child(2)").text();
         if (staffId.includes(searchValue)) {
           $(this).css("display", "grid");
         }
@@ -74,6 +74,7 @@ function loadTable (){
         const tableBody = $(".table .table-body");
         tableBody.empty();
         console.log(result);
+      result.sort((a, b) => a.firstName.localeCompare(b.firstName));
         result.forEach((staff) =>{
           tableBody.append(
             `
