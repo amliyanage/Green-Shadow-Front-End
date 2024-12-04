@@ -21,11 +21,46 @@
       </div>
       <img class="profile-img" src="/assets/icon/profile_icon.png" alt="" />
     </div>
+    <div class="d-flex w-100 justify-content-between count-set mt-4">
+      <div class="staff-count">
+        <h4>Staff Count</h4>
+        <h1>50</h1>
+      </div>
+      <div class="vehicle-count">
+        <h4>Vehicle Count</h4>
+        <h1>50</h1>
+      </div>
+      <div class="field-count">
+        <h4>Field Count</h4>
+        <h1>50</h1>
+      </div>
+      <div class="equipment-count">
+        <h4>Equipment Count</h4>
+        <h1>50</h1>
+      </div>
+      <div class="crop-count">
+        <h4>Crop Count</h4>
+        <h1>50</h1>
+      </div>
+    </div>
+    <div class="charts w-100 d-grid">
+        <!-- Vehicle Pie Chart -->
+        <div class="mt-4">
+          <canvas id="vehicleChart"></canvas>
+        </div>
+
+        <!-- Equipment Donut Chart -->
+        <div class="mt-4">
+          <canvas id="equipmentChart"></canvas>
+        </div>
+
+    </div>
     <script
             src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
             crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module" src="../../controller/HomeController.js"></script>
   </body>
 </html>

@@ -146,7 +146,7 @@ $("#save-vehicle-popup button").click(function () {
     licensePlateNumber: licensePlateNumber,
     vehicleCategory: vehicleCategory,
     fuelType: fuelType,
-    status : "disactive",
+    status : "Available",
     remarks: remarks,
   };
 
@@ -248,7 +248,7 @@ $("#update-vehicle-popup button").click(function () {
       licensePlateNumber: result.licensePlateNumber,
       vehicleCategory : result.vehicleCategory,
       fuelType : result.fuelType,
-      status : "Active",
+      status : selectValue === "N/A" ? "Available" : "Not Available",
       remarks : remarkText,
     };
     updateVehicle(targetVehicleId, updateVehicleObj, selectValue).then((result) => {
