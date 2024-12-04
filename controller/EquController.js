@@ -281,6 +281,7 @@ $('#update-equ-popup button').click(function(){
 function loadDataToViewEqu(){
 
     getEqu(targetId).then((result) => {
+        $('#view-equ-popup .equ-id-text').val(result.equipmentId);
         $('#view-equ-popup .equ-name-text').val(result.equipmentName);
         $('#view-equ-popup .equ-type-text').val(result.equipmentType);
         $('#view-equ-popup .staff-text').val(result.staffId === null ? "N/A" : result.staffId);
