@@ -5,7 +5,7 @@ $(document).ready(function () {
 });
 
 $(".log-out-btn").click(function (){
-  alert("awaa")
+  //alert("awaa")
   saveCookie("authToken", "");
   window.location.href = "../index.html";
 })

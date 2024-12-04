@@ -384,7 +384,7 @@ function viewLocOnMap (Longitude, Latitude,popupType) {
   const defaultLocation = { lat: Latitude, lng: Longitude }; 
 
   function initMap() {
-    alert("Map Loaded");
+    //alert("Map Loaded");
 
     // Initialize the map with jQuery-selected DOM element
     const mapElement = popupType === "update" ? $("#update-field-popup #map")[0] : $("#view-field-popup #map")[0];
@@ -490,7 +490,7 @@ function loadDataToFieldViewForm() {
     })
     .catch((error) => {
       console.log(error);
-      alert("Failed to load field data. Please try again.");
+      //alert("Failed to load field data. Please try again.");
     });
 }
 
@@ -528,7 +528,7 @@ function loadMapToUpdate(x,y){
     const defaultLocation = { lat: y, lng: x };
 
     function initMap() {
-        alert("Map Loaded");
+        //alert("Map Loaded");
 
         const mapElement = $("#update-field-popup #map")[0];
 

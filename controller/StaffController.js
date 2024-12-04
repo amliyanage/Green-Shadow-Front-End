@@ -355,7 +355,7 @@ $("#update-staff-popup button").click(function(){
 });
 
 function loadDataToViewForm () {
-  alert(targetStaffId);
+  //alert(targetStaffId);
   getStaffMember(targetStaffId)
     .then((result) => {
       $("#view-staff-popup .staff-id-text").val(result.id);
