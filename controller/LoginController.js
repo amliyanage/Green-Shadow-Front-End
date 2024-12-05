@@ -1,5 +1,5 @@
-import { getCookie, saveCookie } from "../service/ToeknService.js";
-import { login } from "../service/UserService.js";
+import { getCookie, saveCookie } from "../service/TokenModel.js";
+import { login } from "../service/UserModel.js";
 
 $(document).ready(function () {
   $(".toggle-password").click(function () {

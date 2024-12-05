@@ -1,6 +1,6 @@
-import {getAllField, getField, saveField, deleteField, updateField} from "../service/FieldService.js";
+import {getAllField, getField, saveField, deleteField, updateField} from "../service/FieldModel.js";
 import { showAlerts } from "./DashboardController.js";
-import {getAllStaff, getStaffMember} from "../service/StaffService.js";
+import {getAllStaff, getStaffMember} from "../service/StaffModel.js";
 import {checkAccess} from "../util/AccessController.js";
 
 var Longitude = 0;

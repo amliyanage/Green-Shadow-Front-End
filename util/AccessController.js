@@ -1,4 +1,4 @@
-import {getUserByEmail} from "../service/UserService.js";
+import {getUserByEmail} from "../service/UserModel.js";
 import {showAlerts} from "../controller/DashboardController.js";
 
 export async function checkAccess(endpoint){

@@ -1,4 +1,4 @@
-import { getCookie, saveCookie, tokenRefresh } from "../service/ToeknService.js";
+import { getCookie, saveCookie, tokenRefresh } from "../service/TokenModel.js";
 
 $(document).ready(function () {
     changeButtonColor("dashboard-icon");

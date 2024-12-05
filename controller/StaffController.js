@@ -1,4 +1,4 @@
-import { addStaff, deleteStaff, getAllStaff, getStaffMember, updateStaff } from "../service/StaffService.js";
+import { addStaff, deleteStaff, getAllStaff, getStaffMember, updateStaff } from "../service/StaffModel.js";
 import {showAlerts} from "./DashboardController.js";
 import {checkAccess} from "../util/AccessController.js";
 

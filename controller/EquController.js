@@ -1,7 +1,7 @@
-import {deleteEqu, getAllEqu, getEqu, saveEqu, updateEqu} from "../service/EquService.js";
+import {deleteEqu, getAllEqu, getEqu, saveEqu, updateEqu} from "../service/EquModel.js";
 import {showAlerts} from "./DashboardController.js";
-import {getAllStaff} from "../service/StaffService.js";
-import {getAllField} from "../service/FieldService.js";
+import {getAllStaff} from "../service/StaffModel.js";
+import {getAllField} from "../service/FieldModel.js";
 import {checkAccess} from "../util/AccessController.js";
 
 var targetId = null;

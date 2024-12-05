@@ -1,5 +1,5 @@
 // In LoginService.js
-import {getCookie} from "./ToeknService.js";
+import {getCookie} from "./TokenModel.js";
 
 export function register(email, password, role) {
   const raw = {
