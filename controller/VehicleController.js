@@ -1,5 +1,5 @@
-import { getAllStaff } from "../service/StaffService.js";
-import { addVehicle, deleteVehicle, getAllVehicles, getVehicle, updateVehicle } from "../service/VehicleService.js";
+import { getAllStaff } from "../service/StaffModel.js";
+import { addVehicle, deleteVehicle, getAllVehicles, getVehicle, updateVehicle } from "../service/VehicleModel.js";
 import { showAlerts } from "./DashboardController.js";
 import {checkAccess} from "../util/AccessController.js";
 

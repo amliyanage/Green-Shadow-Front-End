@@ -1,6 +1,6 @@
-import {deleteCrop, getAllCrops, getCrop, saveCrop, updateCrop} from "../service/CropService.js";
+import {deleteCrop, getAllCrops, getCrop, saveCrop, updateCrop} from "../service/CropModel.js";
 import {showAlerts} from "./DashboardController.js";
-import {getAllField} from "../service/FieldService.js";
+import {getAllField} from "../service/FieldModel.js";
 import {checkAccess} from "../util/AccessController.js";
 
 var targetCropCode = null;

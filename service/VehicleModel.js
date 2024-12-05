@@ -1,4 +1,4 @@
-import{getCookie} from "../service/ToeknService.js"
+import{getCookie} from "./TokenModel.js"
 
 export function getAllVehicles() {
   return new Promise((resolve, reject) => {

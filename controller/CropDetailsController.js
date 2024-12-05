@@ -4,10 +4,10 @@ import {
     getCropDetails,
     saveCropDetails,
     updateCropDetails
-} from "../service/CropDetailsService.js";
-import {getAllField, getField} from "../service/FieldService.js";
-import {getAllCrops, getCrop} from "../service/CropService.js";
-import {getAllStaff, getStaffMember} from "../service/StaffService.js";
+} from "../service/CropDetailsModel.js";
+import {getAllField, getField} from "../service/FieldModel.js";
+import {getAllCrops, getCrop} from "../service/CropModel.js";
+import {getAllStaff, getStaffMember} from "../service/StaffModel.js";
 import {showAlerts} from "./DashboardController.js";
 import {checkAccess} from "../util/AccessController.js";
 

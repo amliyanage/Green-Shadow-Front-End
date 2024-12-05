@@ -1,4 +1,4 @@
-import { register } from "../service/UserService.js";
+import { register } from "../service/UserModel.js";
 
 $(".cssbuttons-io-button").click(function () {
   const email = $(".email-input").val();

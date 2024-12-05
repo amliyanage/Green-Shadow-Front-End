@@ -1,8 +1,8 @@
-import {getAllStaff} from "../service/StaffService.js";
-import {getAllField} from "../service/FieldService.js";
-import {getAllCrops} from "../service/CropService.js";
-import {getAllVehicles} from "../service/VehicleService.js";
-import {getAllEqu} from "../service/EquService.js";
+import {getAllStaff} from "../service/StaffModel.js";
+import {getAllField} from "../service/FieldModel.js";
+import {getAllCrops} from "../service/CropModel.js";
+import {getAllVehicles} from "../service/VehicleModel.js";
+import {getAllEqu} from "../service/EquModel.js";
 
 $(document).ready(function () {
     // Fetch and display counts
